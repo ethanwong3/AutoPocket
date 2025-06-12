@@ -1,0 +1,302 @@
+{
+	"compiler": {
+		"version": "0.8.18+commit.87f61d96"
+	},
+	"language": "Solidity",
+	"output": {
+		"abi": [
+			{
+				"inputs": [],
+				"stateMutability": "nonpayable",
+				"type": "constructor"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "friendAddress",
+						"type": "address"
+					},
+					{
+						"internalType": "string",
+						"name": "name",
+						"type": "string"
+					}
+				],
+				"name": "addFriend",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "string",
+						"name": "name",
+						"type": "string"
+					}
+				],
+				"name": "addRestaurant",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "restaurant",
+						"type": "uint256"
+					}
+				],
+				"name": "doVote",
+				"outputs": [
+					{
+						"internalType": "bool",
+						"name": "validVote",
+						"type": "bool"
+					}
+				],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "",
+						"type": "address"
+					}
+				],
+				"name": "friends",
+				"outputs": [
+					{
+						"internalType": "string",
+						"name": "name",
+						"type": "string"
+					},
+					{
+						"internalType": "bool",
+						"name": "voted",
+						"type": "bool"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "manager",
+				"outputs": [
+					{
+						"internalType": "address",
+						"name": "",
+						"type": "address"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "numFriends",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "numRestaurants",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "numVotes",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"name": "restaurants",
+				"outputs": [
+					{
+						"internalType": "string",
+						"name": "",
+						"type": "string"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "voteOpen",
+				"outputs": [
+					{
+						"internalType": "bool",
+						"name": "",
+						"type": "bool"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "votedRestaurant",
+				"outputs": [
+					{
+						"internalType": "string",
+						"name": "",
+						"type": "string"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"name": "votes",
+				"outputs": [
+					{
+						"internalType": "address",
+						"name": "voterAddress",
+						"type": "address"
+					},
+					{
+						"internalType": "uint256",
+						"name": "restaurant",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			}
+		],
+		"devdoc": {
+			"author": "Dilum Bandara, CSIRO’s Data61",
+			"kind": "dev",
+			"methods": {
+				"addFriend(address,string)": {
+					"details": "Duplicate check is not done",
+					"params": {
+						"friendAddress": "Friend’s Ethereum address",
+						"name": "Friend’s name"
+					},
+					"returns": {
+						"_0": "Number of friends added so far"
+					}
+				},
+				"addRestaurant(string)": {
+					"details": "To simplify, duplicate check is not done",
+					"params": {
+						"name": "Restaurant name"
+					},
+					"returns": {
+						"_0": "Number of restaurants added so far"
+					}
+				},
+				"constructor": {
+					"details": "Set manager when contract starts"
+				},
+				"doVote(uint256)": {
+					"details": "Duplicate vote not checked",
+					"params": {
+						"restaurant": "Restaurant number"
+					},
+					"returns": {
+						"validVote": "Whether vote is valid"
+					}
+				}
+			},
+			"title": "Contract to agree on the lunch venue",
+			"version": 1
+		},
+		"userdoc": {
+			"kind": "user",
+			"methods": {
+				"addFriend(address,string)": {
+					"notice": "Add a new friend to voter list"
+				},
+				"addRestaurant(string)": {
+					"notice": "Add a new restaurant"
+				},
+				"doVote(uint256)": {
+					"notice": "Vote for a restaurant"
+				}
+			},
+			"version": 1
+		}
+	},
+	"settings": {
+		"compilationTarget": {
+			"contracts/LunchVenue.sol": "LunchVenue"
+		},
+		"evmVersion": "paris",
+		"libraries": {},
+		"metadata": {
+			"bytecodeHash": "ipfs"
+		},
+		"optimizer": {
+			"enabled": false,
+			"runs": 200
+		},
+		"remappings": []
+	},
+	"sources": {
+		"contracts/LunchVenue.sol": {
+			"keccak256": "0x765c6b982718db5dc02c2523d1005440c9966fb470b6bb4925fc82e626c64f87",
+			"license": "UNLICENSED",
+			"urls": [
+				"bzz-raw://59d2190ac1a913b4dab667d3a3e222af53387cca987e4339fcf9de9234ce90ae",
+				"dweb:/ipfs/QmNSA4iH1nGxmCrm2HnBneCbYUpMUvGUWMbUCaKPNNRWPj"
+			]
+		}
+	},
+	"version": 1
+}

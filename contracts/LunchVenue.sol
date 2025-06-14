@@ -1,5 +1,4 @@
 // SPDX-License-Identifier: UNLICENSED
-
 pragma solidity ^0.8.0;
 
 /// @title Contract to agree on the lunch venue
@@ -17,15 +16,17 @@ contract LunchVenue {
         uint restaurant;
     }
 
-    mapping(uint => string) public restaurants;
-    mapping(address => Friend) public friends;
+    mapping(uint => string) public restaurants; // restaurant number => name
+    mapping(address => Friend) public friends;  // address => Friend
+    mapping(uint => Vote) public votes;         // vote number => Vote
+    mapping(uint => uint) private _results;     // restaurant number => number of votes
+
     uint public numRestaurants = 0;
     uint public numFriends = 0;
     uint public numVotes = 0;
+
     address public manager;
     string public votedRestaurant = "";
-    mapping(uint => Vote) public votes;
-    mapping(uint => uint) private _results;
     bool public voteOpen = true;
 
     /// @dev Set manager when contract starts

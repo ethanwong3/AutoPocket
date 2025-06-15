@@ -1,6 +1,6 @@
 {
 	"compiler": {
-		"version": "0.8.18+commit.87f61d96"
+		"version": "0.8.5+commit.a4f2e591"
 	},
 	"language": "Solidity",
 	"output": {
@@ -219,21 +219,21 @@
 			}
 		],
 		"devdoc": {
-			"author": "Dilum Bandara, CSIRO’s Data61",
+			"author": "Dilum Bandara, CSIRO's Data61",
 			"kind": "dev",
 			"methods": {
 				"addFriend(address,string)": {
-					"details": "Duplicate check is not done",
+					"details": "To simplify the code duplication of friends is not checked",
 					"params": {
-						"friendAddress": "Friend’s Ethereum address",
-						"name": "Friend’s name"
+						"friendAddress": "Friend's account/address",
+						"name": "Friend's name"
 					},
 					"returns": {
 						"_0": "Number of friends added so far"
 					}
 				},
 				"addRestaurant(string)": {
-					"details": "To simplify, duplicate check is not done",
+					"details": "To simplify the code, duplication of restaurants isn't checked",
 					"params": {
 						"name": "Restaurant name"
 					},
@@ -245,12 +245,12 @@
 					"details": "Set manager when contract starts"
 				},
 				"doVote(uint256)": {
-					"details": "Duplicate vote not checked",
+					"details": "To simplify the code duplicate votes by a friend is not checked",
 					"params": {
-						"restaurant": "Restaurant number"
+						"restaurant": "Restaurant number being voted"
 					},
 					"returns": {
-						"validVote": "Whether vote is valid"
+						"validVote": "Is the vote valid? A valid vote should be from a registered  friend to a registered restaurant"
 					}
 				}
 			},
@@ -277,7 +277,7 @@
 		"compilationTarget": {
 			"contracts/LunchVenue.sol": "LunchVenue"
 		},
-		"evmVersion": "paris",
+		"evmVersion": "berlin",
 		"libraries": {},
 		"metadata": {
 			"bytecodeHash": "ipfs"
@@ -290,11 +290,11 @@
 	},
 	"sources": {
 		"contracts/LunchVenue.sol": {
-			"keccak256": "0x0e352d6462a39246874d71d28d8d64fd664df38df4e5a1a04b94d2a65cd3104f",
+			"keccak256": "0x2a333063a2fb1d3f8bda9ceb5f05678277176d7733af1e4b935323dd4e50610d",
 			"license": "UNLICENSED",
 			"urls": [
-				"bzz-raw://bd224899085f48affd51d9797266b34cc8d6e90517f4ef153a8ebd0ac070b32a",
-				"dweb:/ipfs/QmXXjiWTmnYpJ3SKYUjXburqWpxKELfgdLbG4Uz1TkB5U8"
+				"bzz-raw://6d57864b401e81dd60ffe2daecf354affa05c0873e6dff3054459b5361d2e202",
+				"dweb:/ipfs/QmNbNtsEocdqpT5c9Pfs2MU6GtCQFchP5U4NLxBKjuC6Mq"
 			]
 		}
 	},

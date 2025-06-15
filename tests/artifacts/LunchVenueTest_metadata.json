@@ -1,35 +1,10 @@
 {
 	"compiler": {
-		"version": "0.8.18+commit.87f61d96"
+		"version": "0.8.5+commit.a4f2e591"
 	},
 	"language": "Solidity",
 	"output": {
 		"abi": [
-			{
-				"anonymous": false,
-				"inputs": [
-					{
-						"indexed": false,
-						"internalType": "address",
-						"name": "voter",
-						"type": "address"
-					},
-					{
-						"indexed": false,
-						"internalType": "string",
-						"name": "friendName",
-						"type": "string"
-					},
-					{
-						"indexed": false,
-						"internalType": "bool",
-						"name": "validVote",
-						"type": "bool"
-					}
-				],
-				"name": "DebugVote",
-				"type": "event"
-			},
 			{
 				"inputs": [
 					{
@@ -350,6 +325,15 @@
 					"returns": {
 						"_0": "Number of restaurants added so far"
 					}
+				},
+				"doVote(uint256)": {
+					"details": "Duplicate vote not checked",
+					"params": {
+						"restaurant": "Restaurant number"
+					},
+					"returns": {
+						"validVote": "Whether vote is valid"
+					}
 				}
 			},
 			"version": 1
@@ -364,18 +348,49 @@
 					"notice": "Add a new restaurant"
 				},
 				"beforeAll()": {
-					"notice": "More special functions are: ’beforeEach’, ’beforeAll’, ’afterEach’ & ’afterAll’"
+					"notice": "'beforeAll' runs before all other tests More special functions are: 'beforeEach', 'beforeAll', 'afterEach' & 'afterAll'"
+				},
+				"doVote(uint256)": {
+					"notice": "Vote for a restaurant"
+				},
+				"lunchVenueTest()": {
+					"notice": "Verify lunch venue is set correctly"
 				},
 				"managerTest()": {
-					"notice": "account-0 is the default account that deploy contract, so it should be the manager (i.e., acc0)"
+					"notice": "Check manager account-0 is the default account that deploy contract, so it should be the manager (i.e., acc0)"
 				},
 				"setFriend()": {
-					"notice": "#sender doesn’t need to be specified explicitly for account-0"
+					"notice": "Set friends as account-0 #sender doesn't need to be specified explicitly for account-0"
+				},
+				"setFriendFailure()": {
+					"notice": "Try adding friend as a user other than manager. This should fail"
 				},
 				"setRestaurant()": {
-					"notice": "When msg.sender isn’t specified, default account (i.e., account-0) is the sender"
+					"notice": "Add restuarant as manager When msg.sender isn't specified, default account (i.e., account-0) is the sender"
+				},
+				"setRestaurantFailure()": {
+					"notice": "Try to add a restaurant as a user other than manager. This should fail #sender: account-1"
+				},
+				"vote()": {
+					"notice": "Vote as Bob (acc1) #sender: account-1"
+				},
+				"vote2()": {
+					"notice": "Vote as Charlie #sender: account-2"
+				},
+				"vote3()": {
+					"notice": "Vote as Eve #sender: account-3"
+				},
+				"voteAfterClosedFailure()": {
+					"notice": "Verify voting after vote closed. This should fail"
+				},
+				"voteFailure()": {
+					"notice": "Try voting as a user not in the friends list. This should fail #sender: account-4"
+				},
+				"voteOpenTest()": {
+					"notice": "Verify voting is now closed"
 				}
 			},
+			"notice": "Inherit 'LunchVenue' contract",
 			"version": 1
 		}
 	},
@@ -383,7 +398,7 @@
 		"compilationTarget": {
 			"tests/LunchVenue_test.sol": "LunchVenueTest"
 		},
-		"evmVersion": "paris",
+		"evmVersion": "berlin",
 		"libraries": {},
 		"metadata": {
 			"bytecodeHash": "ipfs"
@@ -396,11 +411,11 @@
 	},
 	"sources": {
 		"contracts/LunchVenue.sol": {
-			"keccak256": "0xe5b461bb69b4c321882d20a2f772be9282eac5d96011e219992e32d04ca2567d",
+			"keccak256": "0x0e352d6462a39246874d71d28d8d64fd664df38df4e5a1a04b94d2a65cd3104f",
 			"license": "UNLICENSED",
 			"urls": [
-				"bzz-raw://658dd17b7c9831493825c77092e73481969768e1a2177db6ff5f3d769f84ccf7",
-				"dweb:/ipfs/QmWW5EVvZ1jME47myGn3BKw7ViVmRAWcyFFubfvxPZUX7u"
+				"bzz-raw://bd224899085f48affd51d9797266b34cc8d6e90517f4ef153a8ebd0ac070b32a",
+				"dweb:/ipfs/QmXXjiWTmnYpJ3SKYUjXburqWpxKELfgdLbG4Uz1TkB5U8"
 			]
 		},
 		"remix_accounts.sol": {
@@ -420,11 +435,11 @@
 			]
 		},
 		"tests/LunchVenue_test.sol": {
-			"keccak256": "0x3e13167f17fa5bcc5ef5876481bca74732dfbe55ca82e16bbcd0f2b52d266051",
+			"keccak256": "0xe811d5a729b902b03b41710688ca4442772de834bf78441cbb6000f073ecd037",
 			"license": "GPL-3.0",
 			"urls": [
-				"bzz-raw://a807e4dcb337356144936cdcadedfab37d0ae05ad5c7a08c55c7419dcda63db4",
-				"dweb:/ipfs/QmYiMqKW3CVr8GdUtFwLTaqpeCRCfWmfaoJvBvC8ydwumc"
+				"bzz-raw://b0f3bb8b587aa8cded3ef9fea21301961374c319d4e3fc9607ce250e2c9fdfe3",
+				"dweb:/ipfs/QmchcF4xQ6dtF3bVyzoa8nxQtaALwmStWrezsuLzpuJsRq"
 			]
 		}
 	},

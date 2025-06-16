@@ -50,9 +50,29 @@
 			},
 			{
 				"inputs": [],
+				"name": "addRestaurantDuringVotingFailure",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [],
 				"name": "beforeAll",
 				"outputs": [],
 				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "currentPhase",
+				"outputs": [
+					{
+						"internalType": "enum LunchVenue.Phase",
+						"name": "",
+						"type": "uint8"
+					}
+				],
+				"stateMutability": "view",
 				"type": "function"
 			},
 			{
@@ -75,6 +95,26 @@
 				"type": "function"
 			},
 			{
+				"inputs": [],
+				"name": "endBlock",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "endVoting",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
 				"inputs": [
 					{
 						"internalType": "address",
@@ -92,6 +132,45 @@
 					{
 						"internalType": "bool",
 						"name": "voted",
+						"type": "bool"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "restaurantId",
+						"type": "uint256"
+					}
+				],
+				"name": "getVoteCount",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "voteCount",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "initialPhaseTest",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "isShutdown",
+				"outputs": [
+					{
+						"internalType": "bool",
+						"name": "",
 						"type": "bool"
 					}
 				],
@@ -165,6 +244,13 @@
 				"type": "function"
 			},
 			{
+				"inputs": [],
+				"name": "phaseEndedTest",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
 				"inputs": [
 					{
 						"internalType": "uint256",
@@ -181,6 +267,20 @@
 					}
 				],
 				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "setDuplicateFriendFailure",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "setDuplicateRestaurantFailure",
+				"outputs": [],
+				"stateMutability": "nonpayable",
 				"type": "function"
 			},
 			{
@@ -207,6 +307,33 @@
 			{
 				"inputs": [],
 				"name": "setRestaurantFailure",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "shutdown",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "blocksUntilEnd",
+						"type": "uint256"
+					}
+				],
+				"name": "startVoting",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "startVotingPhase",
 				"outputs": [],
 				"stateMutability": "nonpayable",
 				"type": "function"
@@ -241,7 +368,21 @@
 			},
 			{
 				"inputs": [],
+				"name": "voteBeforeVotingPhaseFailure",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [],
 				"name": "voteFailure",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "voteInvalidRestaurantFailure",
 				"outputs": [],
 				"stateMutability": "nonpayable",
 				"type": "function"
@@ -262,6 +403,13 @@
 			{
 				"inputs": [],
 				"name": "voteOpenTest",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "voteTwiceFailure",
 				"outputs": [],
 				"stateMutability": "nonpayable",
 				"type": "function"
@@ -308,17 +456,17 @@
 			"kind": "dev",
 			"methods": {
 				"addFriend(address,string)": {
-					"details": "Duplicate check is not done",
+					"details": "Prevents duplication of friends",
 					"params": {
-						"friendAddress": "Friend’s Ethereum address",
-						"name": "Friend’s name"
+						"friendAddress": "Friend's account/address",
+						"name": "Friend's name"
 					},
 					"returns": {
 						"_0": "Number of friends added so far"
 					}
 				},
 				"addRestaurant(string)": {
-					"details": "To simplify, duplicate check is not done",
+					"details": "Prevents duplication of restaurants by checking name hash",
 					"params": {
 						"name": "Restaurant name"
 					},
@@ -327,12 +475,32 @@
 					}
 				},
 				"doVote(uint256)": {
-					"details": "Duplicate vote not checked",
+					"details": "Prevents duplicate votes and enforces timeout",
 					"params": {
-						"restaurant": "Restaurant number"
+						"restaurant": "Restaurant number being voted"
 					},
 					"returns": {
-						"validVote": "Whether vote is valid"
+						"validVote": "Is the vote valid? A valid vote should be from a registered  friend to a registered restaurant"
+					}
+				},
+				"endVoting()": {
+					"details": "Can be called by manager or automatically when timeout reached"
+				},
+				"getVoteCount(uint256)": {
+					"params": {
+						"restaurantId": "The restaurant ID to check"
+					},
+					"returns": {
+						"voteCount": "Number of votes for the restaurant"
+					}
+				},
+				"shutdown()": {
+					"details": "Only manager can shutdown, prevents all future interactions"
+				},
+				"startVoting(uint256)": {
+					"details": "Only manager can start voting and set timeout",
+					"params": {
+						"blocksUntilEnd": "Number of blocks until voting ends"
 					}
 				}
 			},
@@ -347,11 +515,23 @@
 				"addRestaurant(string)": {
 					"notice": "Add a new restaurant"
 				},
+				"addRestaurantDuringVotingFailure()": {
+					"notice": "Try to add restaurant during voting phase. This should fail"
+				},
 				"beforeAll()": {
 					"notice": "'beforeAll' runs before all other tests More special functions are: 'beforeEach', 'beforeAll', 'afterEach' & 'afterAll'"
 				},
 				"doVote(uint256)": {
 					"notice": "Vote for a restaurant"
+				},
+				"endVoting()": {
+					"notice": "Force end voting (for timeout or manager decision)"
+				},
+				"getVoteCount(uint256)": {
+					"notice": "Get current vote count for a restaurant"
+				},
+				"initialPhaseTest()": {
+					"notice": "Check initial phase is Setup"
 				},
 				"lunchVenueTest()": {
 					"notice": "Verify lunch venue is set correctly"
@@ -359,17 +539,35 @@
 				"managerTest()": {
 					"notice": "Check manager account-0 is the default account that deploy contract, so it should be the manager (i.e., acc0)"
 				},
+				"phaseEndedTest()": {
+					"notice": "Verify phase is now Ended"
+				},
+				"setDuplicateFriendFailure()": {
+					"notice": "Try to add duplicate friend. This should fail"
+				},
+				"setDuplicateRestaurantFailure()": {
+					"notice": "Try to add duplicate restaurant. This should fail"
+				},
 				"setFriend()": {
-					"notice": "Set friends as account-0 #sender doesn't need to be specified explicitly for account-0"
+					"notice": "Set friends as account-0"
 				},
 				"setFriendFailure()": {
 					"notice": "Try adding friend as a user other than manager. This should fail"
 				},
 				"setRestaurant()": {
-					"notice": "Add restuarant as manager When msg.sender isn't specified, default account (i.e., account-0) is the sender"
+					"notice": "Add restaurant as manager When msg.sender isn't specified, default account (i.e., account-0) is the sender"
 				},
 				"setRestaurantFailure()": {
 					"notice": "Try to add a restaurant as a user other than manager. This should fail #sender: account-1"
+				},
+				"shutdown()": {
+					"notice": "Shutdown the contract"
+				},
+				"startVoting(uint256)": {
+					"notice": "Start the voting phase"
+				},
+				"startVotingPhase()": {
+					"notice": "Start voting phase"
 				},
 				"vote()": {
 					"notice": "Vote as Bob (acc1) #sender: account-1"
@@ -378,16 +576,25 @@
 					"notice": "Vote as Charlie #sender: account-2"
 				},
 				"vote3()": {
-					"notice": "Vote as Eve #sender: account-3"
+					"notice": "Vote as Eve to reach quorum (3 out of 4 votes) #sender: account-3"
 				},
 				"voteAfterClosedFailure()": {
 					"notice": "Verify voting after vote closed. This should fail"
 				},
+				"voteBeforeVotingPhaseFailure()": {
+					"notice": "Try voting before voting phase starts. This should fail #sender: account-1"
+				},
 				"voteFailure()": {
 					"notice": "Try voting as a user not in the friends list. This should fail #sender: account-4"
 				},
+				"voteInvalidRestaurantFailure()": {
+					"notice": "Test voting with invalid restaurant number #sender: account-1"
+				},
 				"voteOpenTest()": {
 					"notice": "Verify voting is now closed"
+				},
+				"voteTwiceFailure()": {
+					"notice": "Try voting twice from same account. This should fail We need to test this from account-0 (Alice) who is a registered friend"
 				}
 			},
 			"notice": "Inherit 'LunchVenue' contract",
@@ -404,18 +611,18 @@
 			"bytecodeHash": "ipfs"
 		},
 		"optimizer": {
-			"enabled": false,
+			"enabled": true,
 			"runs": 200
 		},
 		"remappings": []
 	},
 	"sources": {
 		"contracts/LunchVenue.sol": {
-			"keccak256": "0x0e352d6462a39246874d71d28d8d64fd664df38df4e5a1a04b94d2a65cd3104f",
+			"keccak256": "0xed922a538949697d7b66172b33659a6bd204ea8819b9333d8245a72605977176",
 			"license": "UNLICENSED",
 			"urls": [
-				"bzz-raw://bd224899085f48affd51d9797266b34cc8d6e90517f4ef153a8ebd0ac070b32a",
-				"dweb:/ipfs/QmXXjiWTmnYpJ3SKYUjXburqWpxKELfgdLbG4Uz1TkB5U8"
+				"bzz-raw://8236df364e008a113d7fb52b624d584d36242acad334fed562574bc99177d68f",
+				"dweb:/ipfs/QmZrA9MLQWetyV5dFnp88w1MVHbSX6krHSYtgjCWkkF4LR"
 			]
 		},
 		"remix_accounts.sol": {
@@ -435,11 +642,11 @@
 			]
 		},
 		"tests/LunchVenue_test.sol": {
-			"keccak256": "0xe811d5a729b902b03b41710688ca4442772de834bf78441cbb6000f073ecd037",
+			"keccak256": "0x680f16abf51651a6d58fe0a427d74207cec50b6d45ad1a9864f5079a25378fc0",
 			"license": "GPL-3.0",
 			"urls": [
-				"bzz-raw://b0f3bb8b587aa8cded3ef9fea21301961374c319d4e3fc9607ce250e2c9fdfe3",
-				"dweb:/ipfs/QmchcF4xQ6dtF3bVyzoa8nxQtaALwmStWrezsuLzpuJsRq"
+				"bzz-raw://9d4a68bd5f908212fc6e48b7d8e3ca969e938860e3c24c765120629d80d8b4af",
+				"dweb:/ipfs/QmdQkLX4MAe9Ba8BhpTRef1gb9W91Yqq2DhvQNCT7MUTUK"
 			]
 		}
 	},

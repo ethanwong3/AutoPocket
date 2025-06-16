@@ -54,6 +54,19 @@
 				"type": "function"
 			},
 			{
+				"inputs": [],
+				"name": "currentPhase",
+				"outputs": [
+					{
+						"internalType": "enum LunchVenue.Phase",
+						"name": "",
+						"type": "uint8"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
 				"inputs": [
 					{
 						"internalType": "uint256",
@@ -69,6 +82,26 @@
 						"type": "bool"
 					}
 				],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "endBlock",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "endVoting",
+				"outputs": [],
 				"stateMutability": "nonpayable",
 				"type": "function"
 			},
@@ -90,6 +123,38 @@
 					{
 						"internalType": "bool",
 						"name": "voted",
+						"type": "bool"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "restaurantId",
+						"type": "uint256"
+					}
+				],
+				"name": "getVoteCount",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "voteCount",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "isShutdown",
+				"outputs": [
+					{
+						"internalType": "bool",
+						"name": "",
 						"type": "bool"
 					}
 				],
@@ -169,6 +234,26 @@
 			},
 			{
 				"inputs": [],
+				"name": "shutdown",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "blocksUntilEnd",
+						"type": "uint256"
+					}
+				],
+				"name": "startVoting",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [],
 				"name": "voteOpen",
 				"outputs": [
 					{
@@ -219,11 +304,11 @@
 			}
 		],
 		"devdoc": {
-			"author": "Dilum Bandara, CSIRO's Data61",
+			"author": "Dilum Bandara, CSIRO's Data61 (Upgraded Version)",
 			"kind": "dev",
 			"methods": {
 				"addFriend(address,string)": {
-					"details": "To simplify the code duplication of friends is not checked",
+					"details": "Prevents duplication of friends",
 					"params": {
 						"friendAddress": "Friend's account/address",
 						"name": "Friend's name"
@@ -233,7 +318,7 @@
 					}
 				},
 				"addRestaurant(string)": {
-					"details": "To simplify the code, duplication of restaurants isn't checked",
+					"details": "Prevents duplication of restaurants by checking name hash",
 					"params": {
 						"name": "Restaurant name"
 					},
@@ -245,12 +330,32 @@
 					"details": "Set manager when contract starts"
 				},
 				"doVote(uint256)": {
-					"details": "To simplify the code duplicate votes by a friend is not checked",
+					"details": "Prevents duplicate votes and enforces timeout",
 					"params": {
 						"restaurant": "Restaurant number being voted"
 					},
 					"returns": {
 						"validVote": "Is the vote valid? A valid vote should be from a registered  friend to a registered restaurant"
+					}
+				},
+				"endVoting()": {
+					"details": "Can be called by manager or automatically when timeout reached"
+				},
+				"getVoteCount(uint256)": {
+					"params": {
+						"restaurantId": "The restaurant ID to check"
+					},
+					"returns": {
+						"voteCount": "Number of votes for the restaurant"
+					}
+				},
+				"shutdown()": {
+					"details": "Only manager can shutdown, prevents all future interactions"
+				},
+				"startVoting(uint256)": {
+					"details": "Only manager can start voting and set timeout",
+					"params": {
+						"blocksUntilEnd": "Number of blocks until voting ends"
 					}
 				}
 			},
@@ -268,6 +373,18 @@
 				},
 				"doVote(uint256)": {
 					"notice": "Vote for a restaurant"
+				},
+				"endVoting()": {
+					"notice": "Force end voting (for timeout or manager decision)"
+				},
+				"getVoteCount(uint256)": {
+					"notice": "Get current vote count for a restaurant"
+				},
+				"shutdown()": {
+					"notice": "Shutdown the contract"
+				},
+				"startVoting(uint256)": {
+					"notice": "Start the voting phase"
 				}
 			},
 			"version": 1
@@ -283,18 +400,18 @@
 			"bytecodeHash": "ipfs"
 		},
 		"optimizer": {
-			"enabled": false,
+			"enabled": true,
 			"runs": 200
 		},
 		"remappings": []
 	},
 	"sources": {
 		"contracts/LunchVenue.sol": {
-			"keccak256": "0x2a333063a2fb1d3f8bda9ceb5f05678277176d7733af1e4b935323dd4e50610d",
+			"keccak256": "0xb17c3233aa2a587c7163325c86225159fc9384cb8678bcc78f844c8e053bfe62",
 			"license": "UNLICENSED",
 			"urls": [
-				"bzz-raw://6d57864b401e81dd60ffe2daecf354affa05c0873e6dff3054459b5361d2e202",
-				"dweb:/ipfs/QmNbNtsEocdqpT5c9Pfs2MU6GtCQFchP5U4NLxBKjuC6Mq"
+				"bzz-raw://c9264704380235ed520c550cf12fca4165f85d9da3043227b274a15bae448a5d",
+				"dweb:/ipfs/QmWcYsv8yrcrt1Rne7dTgYtfviwyKsbdKeB6ePgRLj5MhE"
 			]
 		}
 	},

@@ -27,7 +27,7 @@ contract LunchVenue{
 
     mapping (uint => Vote) public votes;
     mapping (uint => uint) private _results;
-    bool public voteOpen = true;
+    bool public voteOpen = false;                       // voting should start clsoed for setup phase
     
     enum Phase { Setup, Voting, Ended }                 // voting phases
     Phase public currentPhase = Phase.Setup;            // current phase of the contract
@@ -72,9 +72,10 @@ contract LunchVenue{
      * @return Number of friends added so far
      */
     function addFriend(address friendAddress, string memory name) public restricted contractActive onlyDuring(Phase.Setup) returns (uint){
-        // check if name stored at friends account address exists
+        // check if name stored at friends account address exists, and ensure name is not empty
         require(bytes(friends[friendAddress].name).length == 0, "Friend already exists.");
-        
+        require(bytes(name).length > 0, "Name cannot be empty.");
+
         Friend memory f;
         f.name = name;
         f.voted = false;
@@ -91,8 +92,8 @@ contract LunchVenue{
      */
     function startVoting(uint blocksUntilEnd) public restricted contractActive onlyDuring(Phase.Setup) {
         // ensure there is at least two friends and two restaurants
-        require(numRestaurants > 1, "At least one restaurant must be added.");
-        require(numFriends > 1, "At least one friend must be added.");
+        require(numRestaurants > 1, "At least two restaurants must be added.");
+        require(numFriends > 1, "At least two friends must be added.");
         
         // track endblock, move into voting phase, open voting
         endBlock = block.number + blocksUntilEnd;
@@ -100,6 +101,34 @@ contract LunchVenue{
         voteOpen = true;
     }
     
+    /**
+     * @notice Internal function to transition the contract from voting phase to ended phase.
+     * @dev This function finalises the voting outcome if there are any votes,
+     *      otherwise it simply closes voting. It is intended to be called both
+     *      by the manager (via `endVoting()`) and internally (e.g., after timeout).
+     *      This function does not perform any access control checks.
+     */
+    function _endVoting() internal {
+        if (numVotes > 0) {
+            finalResult();
+        } else {
+            // logic completed in final result (not abstracted to remain originality of contract)
+            voteOpen = false;
+            currentPhase = Phase.Ended;
+        }
+    }
+
+    /** 
+     * @notice Force end voting (for timeout or manager decision)
+     * @dev Can be called by manager or automatically when timeout reached
+     */
+    function endVoting() public restricted contractActive {
+        // ensure current phase is voting
+        require(currentPhase == Phase.Voting, "Not in voting phase.");
+        // call internal function for end voting logic
+        _endVoting();
+    }
+
     /** 
      * @notice Vote for a restaurant
      * @dev Prevents duplicate votes and enforces timeout
@@ -109,11 +138,19 @@ contract LunchVenue{
      * friend to a registered restaurant
     */
     function doVote(uint restaurant) public contractActive onlyDuring(Phase.Voting) votingOpen returns (bool validVote){
-        // ensure voting has not timed out, only friends vote, no multiple votes, valid restaurant
-        require(block.number <= endBlock, "Voting period ended.");
+        // ensure valid restaurant
+        require(bytes(restaurants[restaurant]).length != 0, "Restaurant does not exist.");
+
+        // ensure voting has not timed out, if so move to end phase
+        if (block.number > endBlock) {
+            // call end voting internal function to bypass restriction
+            _endVoting();
+            return false;
+        }
+
+        // ensure only friends vote, and no multiple votes,
         require(bytes(friends[msg.sender].name).length != 0, "You are not a registered friend.");
         require(!friends[msg.sender].voted, "You have already voted.");
-        require(bytes(restaurants[restaurant]).length != 0, "Restaurant does not exist.");
         
         // if all conditions met, process vote
         validVote = true;
@@ -129,24 +166,6 @@ contract LunchVenue{
         }
         return validVote;
     }
-
-    /** 
-     * @notice Force end voting (for timeout or manager decision)
-     * @dev Can be called by manager or automatically when timeout reached
-     */
-    function endVoting() public restricted contractActive {
-        // ensure current phase is voting
-        require(currentPhase == Phase.Voting, "Not in voting phase.");
-        // close votes and calc voted restaurant if more than 1 vote recorded
-        if (numVotes > 0) {
-            finalResult();
-        } else {
-            currentPhase = Phase.Ended;
-            voteOpen = false;
-        }
-    }
-
-    // HERE
 
     /** 
      * @notice Determine winner restaurant
@@ -184,15 +203,6 @@ contract LunchVenue{
         // end voting and move to final phase
         voteOpen = false;
         currentPhase = Phase.Ended;
-    }
-    
-    /**
-     * @notice Get current vote count for a restaurant
-     * @param restaurantId The restaurant ID to check
-     * @return voteCount Number of votes for the restaurant
-     */
-    function getVoteCount(uint restaurantId) public view returns (uint voteCount) {
-        return _results[restaurantId];
     }
     
     /** 

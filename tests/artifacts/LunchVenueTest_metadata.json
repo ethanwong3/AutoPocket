@@ -139,25 +139,6 @@
 				"type": "function"
 			},
 			{
-				"inputs": [
-					{
-						"internalType": "uint256",
-						"name": "restaurantId",
-						"type": "uint256"
-					}
-				],
-				"name": "getVoteCount",
-				"outputs": [
-					{
-						"internalType": "uint256",
-						"name": "voteCount",
-						"type": "uint256"
-					}
-				],
-				"stateMutability": "view",
-				"type": "function"
-			},
-			{
 				"inputs": [],
 				"name": "initialPhaseTest",
 				"outputs": [],
@@ -486,14 +467,6 @@
 				"endVoting()": {
 					"details": "Can be called by manager or automatically when timeout reached"
 				},
-				"getVoteCount(uint256)": {
-					"params": {
-						"restaurantId": "The restaurant ID to check"
-					},
-					"returns": {
-						"voteCount": "Number of votes for the restaurant"
-					}
-				},
 				"shutdown()": {
 					"details": "Only manager can shutdown, prevents all future interactions"
 				},
@@ -526,9 +499,6 @@
 				},
 				"endVoting()": {
 					"notice": "Force end voting (for timeout or manager decision)"
-				},
-				"getVoteCount(uint256)": {
-					"notice": "Get current vote count for a restaurant"
 				},
 				"initialPhaseTest()": {
 					"notice": "Check initial phase is Setup"
@@ -618,11 +588,11 @@
 	},
 	"sources": {
 		"contracts/LunchVenue.sol": {
-			"keccak256": "0xed922a538949697d7b66172b33659a6bd204ea8819b9333d8245a72605977176",
+			"keccak256": "0x01523c14c249afc90125df0bbec2783dac08fba41dec7f33578596333cbb1c9e",
 			"license": "UNLICENSED",
 			"urls": [
-				"bzz-raw://8236df364e008a113d7fb52b624d584d36242acad334fed562574bc99177d68f",
-				"dweb:/ipfs/QmZrA9MLQWetyV5dFnp88w1MVHbSX6krHSYtgjCWkkF4LR"
+				"bzz-raw://7ffc7439e8c3c96e2086195525357b0892c21407c1240bd28557652af22e9994",
+				"dweb:/ipfs/Qma4ifHWCbDt4kF76i7jLyQxdX9Pj4xpwsUMstgBdum9dw"
 			]
 		},
 		"remix_accounts.sol": {

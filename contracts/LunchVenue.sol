@@ -5,6 +5,49 @@ pragma solidity ^0.8.0;
 /// @title Contract to agree on the lunch venue
 /// @author Dilum Bandara, CSIRO's Data61 (Upgraded Version)
 
+/**
+ * Solutions To 5 Weaknesses Chosen
+ * 
+ * 1 (Duplicate Votes)
+ * - Added a check in doVote() using:
+ *     require(!friends[msg.sender].voted, "You have already voted.");
+ * - Added bool data to a friend that get updated after a successful vote.
+ * - This ensures friends cannot vote more than once.
+ * 
+ * 2 (Duplicate Friends and Restaurants)
+ * - Added a check in addFriend() to ensure the address has no associated name:
+ *     require(bytes(friends[friendAddress].name).length == 0, "Friend already exists.");
+ * - Added a check in addFriend() that ensures non empty names.
+ * - This avoids a Remix bug that allows friends to be added without a name.
+ * - Added restaurantExists that maps a restaurants hash to a bool if the restaurant exists.
+ * - Added a check in addRestaurant that ensures restaurantExists is not true, which is the default if it has never been mapped:
+ *     bytes32 nameHash = keccak256(abi.encodePacked(name));
+ *     require(!restaurantExists[nameHash], "Restaurant already exists.");
+ * - Added mapping in addRestaurant() to ensure their default false is toggled to true.
+ * - This ensures that neither users are unique to their address and restaurants are unique to their name.
+ * 
+ * 3 (Contract Phases)
+ * - Added an enum Phase to manage contract state.
+ * - Added currentPhase to track the phase.
+ * - Added onlyDuring(phase) modifier to restrict functions like addFriend, addRestaurant, and doVote.
+ * - This ensures friends/restaurants can only be added in the setup phase, and voting only occurs in the voting phase.
+ * 
+ * 4 (Timeout Functionality)
+ * - Added endBlock to track when voting ends.
+ * - Added startVoting(blocksUntilEnd) which sets endBlock to block.number + blocksUntilEnd.
+ * - Edited doVote() to check if block.number > endBlock, calling _endVoting() if true and gracefully exits.
+ * - This ensures that the voting phase will timeout after a set amount of blocks that the manager chooses.
+ * - As there is no automatic execution in Solidity, this is the closest possible method.
+ * - Added endVoting() which calls _endVoting.
+ * - This gives managers the ability to automatically end the voting phase.
+ * 
+ * 5 (Shutdown Functionality)
+ * - Added a bool isShutdown to disable the contract.
+ * - Added a contractActive modifier to guard all public functions.
+ * - Added shutdown() which progresses the contract to the final stage without calculating results.
+ * - This ensures that managers have the ability to disable the contract.
+ */
+
 contract LunchVenue{
     
     struct Friend {
@@ -27,7 +70,7 @@ contract LunchVenue{
 
     mapping (uint => Vote) public votes;
     mapping (uint => uint) private _results;
-    bool public voteOpen = false;                       // voting should start clsoed for setup phase
+    bool public voteOpen = false;                       // voting should start closed for setup phase
     
     enum Phase { Setup, Voting, Ended }                 // voting phases
     Phase public currentPhase = Phase.Setup;            // current phase of the contract
@@ -109,13 +152,15 @@ contract LunchVenue{
      *      This function does not perform any access control checks.
      */
     function _endVoting() internal {
+        // calculate results
         if (numVotes > 0) {
             finalResult();
-        } else {
-            // logic completed in final result (not abstracted to remain originality of contract)
-            voteOpen = false;
-            currentPhase = Phase.Ended;
         }
+
+        // move onto final phase
+        voteOpen = false;
+        currentPhase = Phase.Ended;
+        
     }
 
     /** 
@@ -162,7 +207,8 @@ contract LunchVenue{
         votes[numVotes] = v;
         
         if (numVotes >= numFriends/2 + 1) {
-            finalResult();
+            // move onto final phase
+            _endVoting();
         }
         return validVote;
     }
@@ -188,10 +234,6 @@ contract LunchVenue{
             }
         }
         votedRestaurant = restaurants[highestRestaurant];
-        voteOpen = false;
-
-        // move to final phase
-        currentPhase = Phase.Ended;
     }
     
     /**
@@ -199,8 +241,8 @@ contract LunchVenue{
      * @dev Only manager can shutdown, prevents all future interactions
      */
     function shutdown() public restricted {
+        // move onto final phase without calculating a result
         isShutdown = true;
-        // end voting and move to final phase
         voteOpen = false;
         currentPhase = Phase.Ended;
     }
@@ -222,7 +264,7 @@ contract LunchVenue{
     }
     
     /**
-     * @notice Only during specific phase
+     * @notice Only during specified phase
      */
     modifier onlyDuring(Phase phase) {
         require(currentPhase == phase, "Action not allowed in current phase.");
@@ -230,7 +272,7 @@ contract LunchVenue{
     }
     
     /**
-     * @notice Only when contract is active (not shutdown)
+     * @notice Only when contract is not shutdown
      */
     modifier contractActive() {
         require(!isShutdown, "Contract is shut down.");

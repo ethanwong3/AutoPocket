@@ -1,0 +1,302 @@
+{
+	"compiler": {
+		"version": "0.8.5+commit.a4f2e591"
+	},
+	"language": "Solidity",
+	"output": {
+		"abi": [
+			{
+				"inputs": [],
+				"stateMutability": "nonpayable",
+				"type": "constructor"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "friendAddress",
+						"type": "address"
+					},
+					{
+						"internalType": "string",
+						"name": "name",
+						"type": "string"
+					}
+				],
+				"name": "addFriend",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "string",
+						"name": "name",
+						"type": "string"
+					}
+				],
+				"name": "addRestaurant",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "restaurant",
+						"type": "uint256"
+					}
+				],
+				"name": "doVote",
+				"outputs": [
+					{
+						"internalType": "bool",
+						"name": "validVote",
+						"type": "bool"
+					}
+				],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "",
+						"type": "address"
+					}
+				],
+				"name": "friends",
+				"outputs": [
+					{
+						"internalType": "string",
+						"name": "name",
+						"type": "string"
+					},
+					{
+						"internalType": "bool",
+						"name": "voted",
+						"type": "bool"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "manager",
+				"outputs": [
+					{
+						"internalType": "address",
+						"name": "",
+						"type": "address"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "numFriends",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "numRestaurants",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "numVotes",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"name": "restaurants",
+				"outputs": [
+					{
+						"internalType": "string",
+						"name": "",
+						"type": "string"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "voteOpen",
+				"outputs": [
+					{
+						"internalType": "bool",
+						"name": "",
+						"type": "bool"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "votedRestaurant",
+				"outputs": [
+					{
+						"internalType": "string",
+						"name": "",
+						"type": "string"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"name": "votes",
+				"outputs": [
+					{
+						"internalType": "address",
+						"name": "voterAddress",
+						"type": "address"
+					},
+					{
+						"internalType": "uint256",
+						"name": "restaurant",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			}
+		],
+		"devdoc": {
+			"author": "Dilum Bandara, CSIRO's Data61",
+			"kind": "dev",
+			"methods": {
+				"addFriend(address,string)": {
+					"details": "To simplify the code duplication of friends is not checked",
+					"params": {
+						"friendAddress": "Friend's account/address",
+						"name": "Friend's name"
+					},
+					"returns": {
+						"_0": "Number of friends added so far"
+					}
+				},
+				"addRestaurant(string)": {
+					"details": "To simplify the code, duplication of restaurants isn't checked",
+					"params": {
+						"name": "Restaurant name"
+					},
+					"returns": {
+						"_0": "Number of restaurants added so far"
+					}
+				},
+				"constructor": {
+					"details": "Set manager when contract starts"
+				},
+				"doVote(uint256)": {
+					"details": "To simplify the code duplicate votes by a friend is not checked",
+					"params": {
+						"restaurant": "Restaurant number being voted"
+					},
+					"returns": {
+						"validVote": "Is the vote valid? A valid vote should be from a registered  friend to a registered restaurant"
+					}
+				}
+			},
+			"title": "Contract to agree on the lunch venue",
+			"version": 1
+		},
+		"userdoc": {
+			"kind": "user",
+			"methods": {
+				"addFriend(address,string)": {
+					"notice": "Add a new friend to voter list"
+				},
+				"addRestaurant(string)": {
+					"notice": "Add a new restaurant"
+				},
+				"doVote(uint256)": {
+					"notice": "Vote for a restaurant"
+				}
+			},
+			"version": 1
+		}
+	},
+	"settings": {
+		"compilationTarget": {
+			"project1/contracts/LunchVenue.sol": "LunchVenue"
+		},
+		"evmVersion": "berlin",
+		"libraries": {},
+		"metadata": {
+			"bytecodeHash": "ipfs"
+		},
+		"optimizer": {
+			"enabled": true,
+			"runs": 200
+		},
+		"remappings": []
+	},
+	"sources": {
+		"project1/contracts/LunchVenue.sol": {
+			"keccak256": "0x2a333063a2fb1d3f8bda9ceb5f05678277176d7733af1e4b935323dd4e50610d",
+			"license": "UNLICENSED",
+			"urls": [
+				"bzz-raw://6d57864b401e81dd60ffe2daecf354affa05c0873e6dff3054459b5361d2e202",
+				"dweb:/ipfs/QmNbNtsEocdqpT5c9Pfs2MU6GtCQFchP5U4NLxBKjuC6Mq"
+			]
+		}
+	},
+	"version": 1
+}

@@ -23,6 +23,49 @@
 						"type": "string"
 					}
 				],
+				"name": "_addFriend",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "string",
+						"name": "name",
+						"type": "string"
+					}
+				],
+				"name": "_addRestaurant",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "friendAddress",
+						"type": "address"
+					},
+					{
+						"internalType": "string",
+						"name": "name",
+						"type": "string"
+					}
+				],
 				"name": "addFriend",
 				"outputs": [
 					{
@@ -234,6 +277,25 @@
 				"type": "function"
 			},
 			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "restaurant",
+						"type": "uint256"
+					}
+				],
+				"name": "voteAs",
+				"outputs": [
+					{
+						"internalType": "bool",
+						"name": "",
+						"type": "bool"
+					}
+				],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
 				"inputs": [],
 				"name": "voteOpen",
 				"outputs": [
@@ -287,6 +349,12 @@
 		"devdoc": {
 			"kind": "dev",
 			"methods": {
+				"_addFriend(address,string)": {
+					"custom:testing": "Only used for testing in LunchVenueTest This function contains the functionality for adding friends this function is wrapped with a function with modifiers to synthetically internally expose this function to testing"
+				},
+				"_addRestaurant(string)": {
+					"custom:testing": "Only used for testing in LunchVenueTest This function contains the functionality for adding restaurants this function is wrapped with a function with modifiers to synthetically internally expose this function to testing"
+				},
 				"addFriend(address,string)": {
 					"details": "Prevents duplication of friends",
 					"params": {
@@ -376,11 +444,11 @@
 	},
 	"sources": {
 		"contracts/LunchVenue.sol": {
-			"keccak256": "0x5dca6ac490b6452ac87fa6783dc1563a56b042e2e33e23dc5700aa126ce78c33",
+			"keccak256": "0xe5fd283eba4b6b23d9db0963621a7b7b721dc0b1db73284927575a71e50bfac8",
 			"license": "UNLICENSED",
 			"urls": [
-				"bzz-raw://b796b2dc893ee154493f402040b2f47328fb4673b55e79e3a574e10b4045531e",
-				"dweb:/ipfs/Qmf3GUT6GwkPrtWC3dGHK8C2zHN2BFj2qGuZoRFPdetLpA"
+				"bzz-raw://64ab4ce5c155cbcd1fa90de5a8c02676d10b06b1aa602191c0ee15ecf68f713f",
+				"dweb:/ipfs/QmX8bFjcbZxisDxrCpSt5UvSSRUHaeVMSBqKyHokzUAppD"
 			]
 		}
 	},

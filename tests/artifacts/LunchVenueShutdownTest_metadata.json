@@ -18,6 +18,49 @@
 						"type": "string"
 					}
 				],
+				"name": "_addFriend",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "string",
+						"name": "name",
+						"type": "string"
+					}
+				],
+				"name": "_addRestaurant",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "friendAddress",
+						"type": "address"
+					},
+					{
+						"internalType": "string",
+						"name": "name",
+						"type": "string"
+					}
+				],
 				"name": "addFriend",
 				"outputs": [
 					{
@@ -45,13 +88,6 @@
 						"type": "uint256"
 					}
 				],
-				"stateMutability": "nonpayable",
-				"type": "function"
-			},
-			{
-				"inputs": [],
-				"name": "addRestaurantAfterShutdownFailure",
-				"outputs": [],
 				"stateMutability": "nonpayable",
 				"type": "function"
 			},
@@ -133,25 +169,6 @@
 						"internalType": "bool",
 						"name": "voted",
 						"type": "bool"
-					}
-				],
-				"stateMutability": "view",
-				"type": "function"
-			},
-			{
-				"inputs": [
-					{
-						"internalType": "uint256",
-						"name": "restaurantId",
-						"type": "uint256"
-					}
-				],
-				"name": "getVoteCount",
-				"outputs": [
-					{
-						"internalType": "uint256",
-						"name": "voteCount",
-						"type": "uint256"
 					}
 				],
 				"stateMutability": "view",
@@ -243,6 +260,13 @@
 			},
 			{
 				"inputs": [],
+				"name": "setupShutdownTest",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [],
 				"name": "shutdown",
 				"outputs": [],
 				"stateMutability": "nonpayable",
@@ -263,15 +287,34 @@
 			},
 			{
 				"inputs": [],
-				"name": "testShutdown",
+				"name": "testOperationAfterShutdown",
 				"outputs": [],
 				"stateMutability": "nonpayable",
 				"type": "function"
 			},
 			{
 				"inputs": [],
-				"name": "voteAfterShutdownFailure",
+				"name": "testShutdown",
 				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "restaurant",
+						"type": "uint256"
+					}
+				],
+				"name": "voteAs",
+				"outputs": [
+					{
+						"internalType": "bool",
+						"name": "",
+						"type": "bool"
+					}
+				],
 				"stateMutability": "nonpayable",
 				"type": "function"
 			},
@@ -329,6 +372,12 @@
 		"devdoc": {
 			"kind": "dev",
 			"methods": {
+				"_addFriend(address,string)": {
+					"custom:testing": "Only used for testing in LunchVenueTest This function contains the functionality for adding friends this function is wrapped with a function with modifiers to synthetically internally expose this function to testing"
+				},
+				"_addRestaurant(string)": {
+					"custom:testing": "Only used for testing in LunchVenueTest This function contains the functionality for adding restaurants this function is wrapped with a function with modifiers to synthetically internally expose this function to testing"
+				},
 				"addFriend(address,string)": {
 					"details": "Prevents duplication of friends",
 					"params": {
@@ -360,14 +409,6 @@
 				"endVoting()": {
 					"details": "Can be called by manager or automatically when timeout reached"
 				},
-				"getVoteCount(uint256)": {
-					"params": {
-						"restaurantId": "The restaurant ID to check"
-					},
-					"returns": {
-						"voteCount": "Number of votes for the restaurant"
-					}
-				},
 				"shutdown()": {
 					"details": "Only manager can shutdown, prevents all future interactions"
 				},
@@ -389,17 +430,14 @@
 				"addRestaurant(string)": {
 					"notice": "Add a new restaurant"
 				},
-				"addRestaurantAfterShutdownFailure()": {
-					"notice": "Try to add restaurant after shutdown. This should fail"
-				},
 				"doVote(uint256)": {
 					"notice": "Vote for a restaurant"
 				},
 				"endVoting()": {
 					"notice": "Force end voting (for timeout or manager decision)"
 				},
-				"getVoteCount(uint256)": {
-					"notice": "Get current vote count for a restaurant"
+				"setupShutdownTest()": {
+					"notice": "Setup for shutdown test"
 				},
 				"shutdown()": {
 					"notice": "Shutdown the contract"
@@ -407,14 +445,14 @@
 				"startVoting(uint256)": {
 					"notice": "Start the voting phase"
 				},
-				"testShutdown()": {
-					"notice": "Test shutdown functionality"
+				"testOperationAfterShutdown()": {
+					"notice": "Test operations fail after shutdown (as manager to avoid restricted modifier)"
 				},
-				"voteAfterShutdownFailure()": {
-					"notice": "Try to vote after shutdown. This should fail #sender: account-1"
+				"testShutdown()": {
+					"notice": "NEW TEST 5: Test shutdown functionality"
 				}
 			},
-			"notice": "Test contract for shutdown functionality",
+			"notice": "Second test contract to test shutdown functionality",
 			"version": 1
 		}
 	},
@@ -435,11 +473,11 @@
 	},
 	"sources": {
 		"contracts/LunchVenue.sol": {
-			"keccak256": "0xb17c3233aa2a587c7163325c86225159fc9384cb8678bcc78f844c8e053bfe62",
+			"keccak256": "0xe5fd283eba4b6b23d9db0963621a7b7b721dc0b1db73284927575a71e50bfac8",
 			"license": "UNLICENSED",
 			"urls": [
-				"bzz-raw://c9264704380235ed520c550cf12fca4165f85d9da3043227b274a15bae448a5d",
-				"dweb:/ipfs/QmWcYsv8yrcrt1Rne7dTgYtfviwyKsbdKeB6ePgRLj5MhE"
+				"bzz-raw://64ab4ce5c155cbcd1fa90de5a8c02676d10b06b1aa602191c0ee15ecf68f713f",
+				"dweb:/ipfs/QmX8bFjcbZxisDxrCpSt5UvSSRUHaeVMSBqKyHokzUAppD"
 			]
 		},
 		"remix_accounts.sol": {
@@ -459,11 +497,11 @@
 			]
 		},
 		"tests/LunchVenue_test.sol": {
-			"keccak256": "0x83cdf4da93c2233d75b65efb2661c05f0c949fd77b5db113e68e72ae79c19b7f",
+			"keccak256": "0xb6ca664b78ec925a527b2d7aff5c4cdaa04b7992197c58a98e09e86176b1d29f",
 			"license": "GPL-3.0",
 			"urls": [
-				"bzz-raw://f14522e21a734f4f8b47bdacb3c123c6593e46f7d13cfa0081e46706b938e346",
-				"dweb:/ipfs/QmdhWqqYxWc45KihNUfBx87KnwS5ui6LvfZowDY3xvpvTe"
+				"bzz-raw://eec09ad3ba66b0edb868302488cd07243f6c39fd05e2261a597c6c30b2aad108",
+				"dweb:/ipfs/QmPQLevaNmpN6gWz52xFamKZLcmgK6wPYbxbcDfoFB5oUg"
 			]
 		}
 	},

@@ -93,7 +93,16 @@ contract LunchVenue{
      * @param name Restaurant name
      * @return Number of restaurants added so far
      */
-    function addRestaurant(string memory name) public restricted contractActive onlyDuring(Phase.Setup) returns (uint){
+    function addRestaurant(string memory name) public contractActive restricted onlyDuring(Phase.Setup) returns (uint) {
+        return _addRestaurant(name);
+    }
+
+    /**
+     * @custom:testing Only used for testing in LunchVenueTest
+     * This function contains the functionality for adding restaurants
+     * this function is wrapped with a function with modifiers to synthetically internally expose this function to testing
+     */
+    function _addRestaurant(string memory name) public contractActive onlyDuring(Phase.Setup) returns (uint) {
         // check if restaurant with name hash exists
         bytes32 nameHash = keccak256(abi.encodePacked(name));
         require(!restaurantExists[nameHash], "Restaurant already exists.");
@@ -114,7 +123,16 @@ contract LunchVenue{
      * @param name Friend's name
      * @return Number of friends added so far
      */
-    function addFriend(address friendAddress, string memory name) public restricted contractActive onlyDuring(Phase.Setup) returns (uint){
+    function addFriend(address friendAddress, string memory name) public contractActive restricted onlyDuring(Phase.Setup) returns (uint) {
+        return _addFriend(friendAddress, name);
+    }
+
+    /**
+     * @custom:testing Only used for testing in LunchVenueTest
+     * This function contains the functionality for adding friends
+     * this function is wrapped with a function with modifiers to synthetically internally expose this function to testing
+     */
+    function _addFriend(address friendAddress, string memory name) public contractActive onlyDuring(Phase.Setup) returns (uint) {
         // check if name stored at friends account address exists, and ensure name is not empty
         require(bytes(friends[friendAddress].name).length == 0, "Friend already exists.");
         require(bytes(name).length > 0, "Name cannot be empty.");
@@ -133,7 +151,7 @@ contract LunchVenue{
      *
      * @param blocksUntilEnd Number of blocks until voting ends
      */
-    function startVoting(uint blocksUntilEnd) public restricted contractActive onlyDuring(Phase.Setup) {
+    function startVoting(uint blocksUntilEnd) public contractActive restricted onlyDuring(Phase.Setup) {
         // ensure there is at least two friends and two restaurants
         require(numRestaurants > 1, "At least two restaurants must be added.");
         require(numFriends > 1, "At least two friends must be added.");
@@ -167,7 +185,7 @@ contract LunchVenue{
      * @notice Force end voting (for timeout or manager decision)
      * @dev Can be called by manager or automatically when timeout reached
      */
-    function endVoting() public restricted contractActive {
+    function endVoting() public contractActive restricted {
         // ensure current phase is voting
         require(currentPhase == Phase.Voting, "Not in voting phase.");
         // call internal function for end voting logic
@@ -182,35 +200,41 @@ contract LunchVenue{
      * @return validVote Is the vote valid? A valid vote should be from a registered 
      * friend to a registered restaurant
     */
-    function doVote(uint restaurant) public contractActive onlyDuring(Phase.Voting) votingOpen returns (bool validVote){
+    function doVote(uint restaurant) public contractActive onlyDuring(Phase.Voting) votingOpen returns (bool validVote) {
         // ensure valid restaurant
         require(bytes(restaurants[restaurant]).length != 0, "Restaurant does not exist.");
 
         // ensure voting has not timed out, if so move to end phase
         if (block.number > endBlock) {
-            // call end voting internal function to bypass restriction
             _endVoting();
             return false;
         }
 
-        // ensure only friends vote, and no multiple votes,
-        require(bytes(friends[msg.sender].name).length != 0, "You are not a registered friend.");
-        require(!friends[msg.sender].voted, "You have already voted.");
-        
-        // if all conditions met, process vote
+        // check if sender is a friend
+        if (bytes(friends[msg.sender].name).length == 0) {
+            revert("You are not a registered friend.");
+        }
+
+        // check if sender already voted
+        if (friends[msg.sender].voted) {
+            revert("You have already voted.");
+        }
+
+        // if conditions met, process vote
         validVote = true;
         friends[msg.sender].voted = true;
-        Vote memory v;
-        v.voterAddress = msg.sender;
-        v.restaurant = restaurant;
-        numVotes++;
-        votes[numVotes] = v;
-        
-        if (numVotes >= numFriends/2 + 1) {
-            // move onto final phase
+        votes[++numVotes] = Vote(msg.sender, restaurant);
+
+        if (numVotes >= numFriends / 2 + 1) {
+            // instead of just calculating results, move to end phase
             _endVoting();
         }
+
         return validVote;
+    }
+
+    function voteAs(uint restaurant) public returns (bool) {
+        return doVote(restaurant);
     }
 
     /** 

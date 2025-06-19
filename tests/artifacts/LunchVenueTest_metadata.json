@@ -18,6 +18,49 @@
 						"type": "string"
 					}
 				],
+				"name": "_addFriend",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "string",
+						"name": "name",
+						"type": "string"
+					}
+				],
+				"name": "_addRestaurant",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "friendAddress",
+						"type": "address"
+					},
+					{
+						"internalType": "string",
+						"name": "name",
+						"type": "string"
+					}
+				],
 				"name": "addFriend",
 				"outputs": [
 					{
@@ -45,13 +88,6 @@
 						"type": "uint256"
 					}
 				],
-				"stateMutability": "nonpayable",
-				"type": "function"
-			},
-			{
-				"inputs": [],
-				"name": "addRestaurantDuringVotingFailure",
-				"outputs": [],
 				"stateMutability": "nonpayable",
 				"type": "function"
 			},
@@ -140,13 +176,6 @@
 			},
 			{
 				"inputs": [],
-				"name": "initialPhaseTest",
-				"outputs": [],
-				"stateMutability": "nonpayable",
-				"type": "function"
-			},
-			{
-				"inputs": [],
 				"name": "isShutdown",
 				"outputs": [
 					{
@@ -225,13 +254,6 @@
 				"type": "function"
 			},
 			{
-				"inputs": [],
-				"name": "phaseEndedTest",
-				"outputs": [],
-				"stateMutability": "nonpayable",
-				"type": "function"
-			},
-			{
 				"inputs": [
 					{
 						"internalType": "uint256",
@@ -248,20 +270,6 @@
 					}
 				],
 				"stateMutability": "view",
-				"type": "function"
-			},
-			{
-				"inputs": [],
-				"name": "setDuplicateFriendFailure",
-				"outputs": [],
-				"stateMutability": "nonpayable",
-				"type": "function"
-			},
-			{
-				"inputs": [],
-				"name": "setDuplicateRestaurantFailure",
-				"outputs": [],
-				"stateMutability": "nonpayable",
 				"type": "function"
 			},
 			{
@@ -321,6 +329,34 @@
 			},
 			{
 				"inputs": [],
+				"name": "testDuplicateFriend",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "testDuplicateRestaurant",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "testDuplicateVoting",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "testPhaseRestriction",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [],
 				"name": "vote",
 				"outputs": [],
 				"stateMutability": "nonpayable",
@@ -348,22 +384,27 @@
 				"type": "function"
 			},
 			{
-				"inputs": [],
-				"name": "voteBeforeVotingPhaseFailure",
-				"outputs": [],
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "restaurant",
+						"type": "uint256"
+					}
+				],
+				"name": "voteAs",
+				"outputs": [
+					{
+						"internalType": "bool",
+						"name": "",
+						"type": "bool"
+					}
+				],
 				"stateMutability": "nonpayable",
 				"type": "function"
 			},
 			{
 				"inputs": [],
 				"name": "voteFailure",
-				"outputs": [],
-				"stateMutability": "nonpayable",
-				"type": "function"
-			},
-			{
-				"inputs": [],
-				"name": "voteInvalidRestaurantFailure",
 				"outputs": [],
 				"stateMutability": "nonpayable",
 				"type": "function"
@@ -384,13 +425,6 @@
 			{
 				"inputs": [],
 				"name": "voteOpenTest",
-				"outputs": [],
-				"stateMutability": "nonpayable",
-				"type": "function"
-			},
-			{
-				"inputs": [],
-				"name": "voteTwiceFailure",
 				"outputs": [],
 				"stateMutability": "nonpayable",
 				"type": "function"
@@ -436,6 +470,12 @@
 		"devdoc": {
 			"kind": "dev",
 			"methods": {
+				"_addFriend(address,string)": {
+					"custom:testing": "Only used for testing in LunchVenueTest This function contains the functionality for adding friends this function is wrapped with a function with modifiers to synthetically internally expose this function to testing"
+				},
+				"_addRestaurant(string)": {
+					"custom:testing": "Only used for testing in LunchVenueTest This function contains the functionality for adding restaurants this function is wrapped with a function with modifiers to synthetically internally expose this function to testing"
+				},
 				"addFriend(address,string)": {
 					"details": "Prevents duplication of friends",
 					"params": {
@@ -488,9 +528,6 @@
 				"addRestaurant(string)": {
 					"notice": "Add a new restaurant"
 				},
-				"addRestaurantDuringVotingFailure()": {
-					"notice": "Try to add restaurant during voting phase. This should fail"
-				},
 				"beforeAll()": {
 					"notice": "'beforeAll' runs before all other tests More special functions are: 'beforeEach', 'beforeAll', 'afterEach' & 'afterAll'"
 				},
@@ -500,26 +537,14 @@
 				"endVoting()": {
 					"notice": "Force end voting (for timeout or manager decision)"
 				},
-				"initialPhaseTest()": {
-					"notice": "Check initial phase is Setup"
-				},
 				"lunchVenueTest()": {
 					"notice": "Verify lunch venue is set correctly"
 				},
 				"managerTest()": {
 					"notice": "Check manager account-0 is the default account that deploy contract, so it should be the manager (i.e., acc0)"
 				},
-				"phaseEndedTest()": {
-					"notice": "Verify phase is now Ended"
-				},
-				"setDuplicateFriendFailure()": {
-					"notice": "Try to add duplicate friend. This should fail"
-				},
-				"setDuplicateRestaurantFailure()": {
-					"notice": "Try to add duplicate restaurant. This should fail"
-				},
 				"setFriend()": {
-					"notice": "Set friends as account-0"
+					"notice": "Set friends as account-0 #sender doesn't need to be specified explicitly for account-0"
 				},
 				"setFriendFailure()": {
 					"notice": "Try adding friend as a user other than manager. This should fail"
@@ -539,6 +564,18 @@
 				"startVotingPhase()": {
 					"notice": "Start voting phase"
 				},
+				"testDuplicateFriend()": {
+					"notice": "NEW TEST 2: Test duplicate friend prevention (as manager)"
+				},
+				"testDuplicateRestaurant()": {
+					"notice": "NEW TEST 1: Test duplicate restaurant prevention (as manager) sender: account-0"
+				},
+				"testDuplicateVoting()": {
+					"notice": "NEW TEST 4: Test duplicate voting prevention #sender: account-1"
+				},
+				"testPhaseRestriction()": {
+					"notice": "NEW TEST 3: Test contract phases - try to add restaurant during voting (as manager)"
+				},
 				"vote()": {
 					"notice": "Vote as Bob (acc1) #sender: account-1"
 				},
@@ -546,25 +583,16 @@
 					"notice": "Vote as Charlie #sender: account-2"
 				},
 				"vote3()": {
-					"notice": "Vote as Eve to reach quorum (3 out of 4 votes) #sender: account-3"
+					"notice": "Vote as Eve #sender: account-3"
 				},
 				"voteAfterClosedFailure()": {
 					"notice": "Verify voting after vote closed. This should fail"
 				},
-				"voteBeforeVotingPhaseFailure()": {
-					"notice": "Try voting before voting phase starts. This should fail #sender: account-1"
-				},
 				"voteFailure()": {
 					"notice": "Try voting as a user not in the friends list. This should fail #sender: account-4"
 				},
-				"voteInvalidRestaurantFailure()": {
-					"notice": "Test voting with invalid restaurant number #sender: account-1"
-				},
 				"voteOpenTest()": {
 					"notice": "Verify voting is now closed"
-				},
-				"voteTwiceFailure()": {
-					"notice": "Try voting twice from same account. This should fail We need to test this from account-0 (Alice) who is a registered friend"
 				}
 			},
 			"notice": "Inherit 'LunchVenue' contract",
@@ -588,11 +616,11 @@
 	},
 	"sources": {
 		"contracts/LunchVenue.sol": {
-			"keccak256": "0x01523c14c249afc90125df0bbec2783dac08fba41dec7f33578596333cbb1c9e",
+			"keccak256": "0xe5fd283eba4b6b23d9db0963621a7b7b721dc0b1db73284927575a71e50bfac8",
 			"license": "UNLICENSED",
 			"urls": [
-				"bzz-raw://7ffc7439e8c3c96e2086195525357b0892c21407c1240bd28557652af22e9994",
-				"dweb:/ipfs/Qma4ifHWCbDt4kF76i7jLyQxdX9Pj4xpwsUMstgBdum9dw"
+				"bzz-raw://64ab4ce5c155cbcd1fa90de5a8c02676d10b06b1aa602191c0ee15ecf68f713f",
+				"dweb:/ipfs/QmX8bFjcbZxisDxrCpSt5UvSSRUHaeVMSBqKyHokzUAppD"
 			]
 		},
 		"remix_accounts.sol": {
@@ -612,11 +640,11 @@
 			]
 		},
 		"tests/LunchVenue_test.sol": {
-			"keccak256": "0x680f16abf51651a6d58fe0a427d74207cec50b6d45ad1a9864f5079a25378fc0",
+			"keccak256": "0xb6ca664b78ec925a527b2d7aff5c4cdaa04b7992197c58a98e09e86176b1d29f",
 			"license": "GPL-3.0",
 			"urls": [
-				"bzz-raw://9d4a68bd5f908212fc6e48b7d8e3ca969e938860e3c24c765120629d80d8b4af",
-				"dweb:/ipfs/QmdQkLX4MAe9Ba8BhpTRef1gb9W91Yqq2DhvQNCT7MUTUK"
+				"bzz-raw://eec09ad3ba66b0edb868302488cd07243f6c39fd05e2261a597c6c30b2aad108",
+				"dweb:/ipfs/QmPQLevaNmpN6gWz52xFamKZLcmgK6wPYbxbcDfoFB5oUg"
 			]
 		}
 	},

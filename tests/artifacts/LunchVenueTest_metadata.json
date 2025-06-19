@@ -322,41 +322,6 @@
 			},
 			{
 				"inputs": [],
-				"name": "startVotingPhase",
-				"outputs": [],
-				"stateMutability": "nonpayable",
-				"type": "function"
-			},
-			{
-				"inputs": [],
-				"name": "testDuplicateFriend",
-				"outputs": [],
-				"stateMutability": "nonpayable",
-				"type": "function"
-			},
-			{
-				"inputs": [],
-				"name": "testDuplicateRestaurant",
-				"outputs": [],
-				"stateMutability": "nonpayable",
-				"type": "function"
-			},
-			{
-				"inputs": [],
-				"name": "testDuplicateVoting",
-				"outputs": [],
-				"stateMutability": "nonpayable",
-				"type": "function"
-			},
-			{
-				"inputs": [],
-				"name": "testPhaseRestriction",
-				"outputs": [],
-				"stateMutability": "nonpayable",
-				"type": "function"
-			},
-			{
-				"inputs": [],
 				"name": "vote",
 				"outputs": [],
 				"stateMutability": "nonpayable",
@@ -471,13 +436,13 @@
 			"kind": "dev",
 			"methods": {
 				"_addFriend(address,string)": {
-					"custom:testing": "Only used for testing in LunchVenueTest This function contains the functionality for adding friends this function is wrapped with a function with modifiers to synthetically internally expose this function to testing"
+					"custom:testing": "Exposes the internal logic of addFriend for unit testing. Because try/catch only works on external function calls, this public wrapper allows us to test revert messages.  It is guarded by the same modifiers as addFriend except restricted, so functionality remains unchanged and safe. This function is not meant for production use."
 				},
 				"_addRestaurant(string)": {
-					"custom:testing": "Only used for testing in LunchVenueTest This function contains the functionality for adding restaurants this function is wrapped with a function with modifiers to synthetically internally expose this function to testing"
+					"custom:testing": "Exposes the internal logic of addRestaurant for unit testing. Because try/catch only works on external function calls, this public wrapper allows us to test revert messages. It is guarded by the same modifiers as addRestaurant except restricted, so functionality remains unchanged and safe. This function is not meant for production use."
 				},
 				"addFriend(address,string)": {
-					"details": "Prevents duplication of friends",
+					"details": "wraps _addFriend for clearer testability and separation of access logicprevents duplication of friends",
 					"params": {
 						"friendAddress": "Friend's account/address",
 						"name": "Friend's name"
@@ -487,7 +452,7 @@
 					}
 				},
 				"addRestaurant(string)": {
-					"details": "Prevents duplication of restaurants by checking name hash",
+					"details": "wraps _addRestaurant for clearer testability and separation of access logicprevents duplication of restaurants by checking name hash",
 					"params": {
 						"name": "Restaurant name"
 					},
@@ -515,6 +480,9 @@
 					"params": {
 						"blocksUntilEnd": "Number of blocks until voting ends"
 					}
+				},
+				"voteAs(uint256)": {
+					"details": "Proxy to call doVote from within the contract using a different external context. Primarily used to simulate external calls in testing environments. This function is not meant for production use."
 				}
 			},
 			"version": 1
@@ -523,10 +491,10 @@
 			"kind": "user",
 			"methods": {
 				"addFriend(address,string)": {
-					"notice": "Add a new friend to voter list"
+					"notice": "Public interface for adding a new friend to voter list"
 				},
 				"addRestaurant(string)": {
-					"notice": "Add a new restaurant"
+					"notice": "Public interface for adding a new restaurant"
 				},
 				"beforeAll()": {
 					"notice": "'beforeAll' runs before all other tests More special functions are: 'beforeEach', 'beforeAll', 'afterEach' & 'afterAll'"
@@ -550,7 +518,7 @@
 					"notice": "Try adding friend as a user other than manager. This should fail"
 				},
 				"setRestaurant()": {
-					"notice": "Add restaurant as manager When msg.sender isn't specified, default account (i.e., account-0) is the sender"
+					"notice": "Add restuarant as manager When msg.sender isn't specified, default account (i.e., account-0) is the sender"
 				},
 				"setRestaurantFailure()": {
 					"notice": "Try to add a restaurant as a user other than manager. This should fail #sender: account-1"
@@ -560,21 +528,6 @@
 				},
 				"startVoting(uint256)": {
 					"notice": "Start the voting phase"
-				},
-				"startVotingPhase()": {
-					"notice": "Start voting phase"
-				},
-				"testDuplicateFriend()": {
-					"notice": "NEW TEST 2: Test duplicate friend prevention (as manager)"
-				},
-				"testDuplicateRestaurant()": {
-					"notice": "NEW TEST 1: Test duplicate restaurant prevention (as manager) sender: account-0"
-				},
-				"testDuplicateVoting()": {
-					"notice": "NEW TEST 4: Test duplicate voting prevention #sender: account-1"
-				},
-				"testPhaseRestriction()": {
-					"notice": "NEW TEST 3: Test contract phases - try to add restaurant during voting (as manager)"
 				},
 				"vote()": {
 					"notice": "Vote as Bob (acc1) #sender: account-1"
@@ -616,11 +569,11 @@
 	},
 	"sources": {
 		"contracts/LunchVenue.sol": {
-			"keccak256": "0xe5fd283eba4b6b23d9db0963621a7b7b721dc0b1db73284927575a71e50bfac8",
+			"keccak256": "0x9533a6f0f618044a8c0fe3ca97856bac9d10bb56a915312415b904230551aff3",
 			"license": "UNLICENSED",
 			"urls": [
-				"bzz-raw://64ab4ce5c155cbcd1fa90de5a8c02676d10b06b1aa602191c0ee15ecf68f713f",
-				"dweb:/ipfs/QmX8bFjcbZxisDxrCpSt5UvSSRUHaeVMSBqKyHokzUAppD"
+				"bzz-raw://dd3ca53591a3c63950231241149518a0e9b0951f7fa5606487d266b8f6b932a3",
+				"dweb:/ipfs/QmZuknuL3bpZKzbgnmdsWs5FjL8PA6wKcex236t2D6Ybgb"
 			]
 		},
 		"remix_accounts.sol": {
@@ -640,11 +593,11 @@
 			]
 		},
 		"tests/LunchVenue_test.sol": {
-			"keccak256": "0xb6ca664b78ec925a527b2d7aff5c4cdaa04b7992197c58a98e09e86176b1d29f",
+			"keccak256": "0xe811d5a729b902b03b41710688ca4442772de834bf78441cbb6000f073ecd037",
 			"license": "GPL-3.0",
 			"urls": [
-				"bzz-raw://eec09ad3ba66b0edb868302488cd07243f6c39fd05e2261a597c6c30b2aad108",
-				"dweb:/ipfs/QmPQLevaNmpN6gWz52xFamKZLcmgK6wPYbxbcDfoFB5oUg"
+				"bzz-raw://b0f3bb8b587aa8cded3ef9fea21301961374c319d4e3fc9607ce250e2c9fdfe3",
+				"dweb:/ipfs/QmchcF4xQ6dtF3bVyzoa8nxQtaALwmStWrezsuLzpuJsRq"
 			]
 		}
 	},

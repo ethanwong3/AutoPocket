@@ -23,49 +23,6 @@
 						"type": "string"
 					}
 				],
-				"name": "_addFriend",
-				"outputs": [
-					{
-						"internalType": "uint256",
-						"name": "",
-						"type": "uint256"
-					}
-				],
-				"stateMutability": "nonpayable",
-				"type": "function"
-			},
-			{
-				"inputs": [
-					{
-						"internalType": "string",
-						"name": "name",
-						"type": "string"
-					}
-				],
-				"name": "_addRestaurant",
-				"outputs": [
-					{
-						"internalType": "uint256",
-						"name": "",
-						"type": "uint256"
-					}
-				],
-				"stateMutability": "nonpayable",
-				"type": "function"
-			},
-			{
-				"inputs": [
-					{
-						"internalType": "address",
-						"name": "friendAddress",
-						"type": "address"
-					},
-					{
-						"internalType": "string",
-						"name": "name",
-						"type": "string"
-					}
-				],
 				"name": "addFriend",
 				"outputs": [
 					{
@@ -97,19 +54,6 @@
 				"type": "function"
 			},
 			{
-				"inputs": [],
-				"name": "currentPhase",
-				"outputs": [
-					{
-						"internalType": "enum LunchVenue.Phase",
-						"name": "",
-						"type": "uint8"
-					}
-				],
-				"stateMutability": "view",
-				"type": "function"
-			},
-			{
 				"inputs": [
 					{
 						"internalType": "uint256",
@@ -125,26 +69,6 @@
 						"type": "bool"
 					}
 				],
-				"stateMutability": "nonpayable",
-				"type": "function"
-			},
-			{
-				"inputs": [],
-				"name": "endBlock",
-				"outputs": [
-					{
-						"internalType": "uint256",
-						"name": "",
-						"type": "uint256"
-					}
-				],
-				"stateMutability": "view",
-				"type": "function"
-			},
-			{
-				"inputs": [],
-				"name": "endVoting",
-				"outputs": [],
 				"stateMutability": "nonpayable",
 				"type": "function"
 			},
@@ -166,19 +90,6 @@
 					{
 						"internalType": "bool",
 						"name": "voted",
-						"type": "bool"
-					}
-				],
-				"stateMutability": "view",
-				"type": "function"
-			},
-			{
-				"inputs": [],
-				"name": "isShutdown",
-				"outputs": [
-					{
-						"internalType": "bool",
-						"name": "",
 						"type": "bool"
 					}
 				],
@@ -258,45 +169,6 @@
 			},
 			{
 				"inputs": [],
-				"name": "shutdown",
-				"outputs": [],
-				"stateMutability": "nonpayable",
-				"type": "function"
-			},
-			{
-				"inputs": [
-					{
-						"internalType": "uint256",
-						"name": "blocksUntilEnd",
-						"type": "uint256"
-					}
-				],
-				"name": "startVoting",
-				"outputs": [],
-				"stateMutability": "nonpayable",
-				"type": "function"
-			},
-			{
-				"inputs": [
-					{
-						"internalType": "uint256",
-						"name": "restaurant",
-						"type": "uint256"
-					}
-				],
-				"name": "voteAs",
-				"outputs": [
-					{
-						"internalType": "bool",
-						"name": "",
-						"type": "bool"
-					}
-				],
-				"stateMutability": "nonpayable",
-				"type": "function"
-			},
-			{
-				"inputs": [],
 				"name": "voteOpen",
 				"outputs": [
 					{
@@ -347,16 +219,11 @@
 			}
 		],
 		"devdoc": {
+			"author": "Dilum Bandara, CSIRO's Data61",
 			"kind": "dev",
 			"methods": {
-				"_addFriend(address,string)": {
-					"custom:testing": "Only used for testing in LunchVenueTest This function contains the functionality for adding friends this function is wrapped with a function with modifiers to synthetically internally expose this function to testing"
-				},
-				"_addRestaurant(string)": {
-					"custom:testing": "Only used for testing in LunchVenueTest This function contains the functionality for adding restaurants this function is wrapped with a function with modifiers to synthetically internally expose this function to testing"
-				},
 				"addFriend(address,string)": {
-					"details": "Prevents duplication of friends",
+					"details": "To simplify the code duplication of friends is not checked",
 					"params": {
 						"friendAddress": "Friend's account/address",
 						"name": "Friend's name"
@@ -366,7 +233,7 @@
 					}
 				},
 				"addRestaurant(string)": {
-					"details": "Prevents duplication of restaurants by checking name hash",
+					"details": "To simplify the code, duplication of restaurants isn't checked",
 					"params": {
 						"name": "Restaurant name"
 					},
@@ -378,27 +245,16 @@
 					"details": "Set manager when contract starts"
 				},
 				"doVote(uint256)": {
-					"details": "Prevents duplicate votes and enforces timeout",
+					"details": "To simplify the code duplicate votes by a friend is not checked",
 					"params": {
 						"restaurant": "Restaurant number being voted"
 					},
 					"returns": {
 						"validVote": "Is the vote valid? A valid vote should be from a registered  friend to a registered restaurant"
 					}
-				},
-				"endVoting()": {
-					"details": "Can be called by manager or automatically when timeout reached"
-				},
-				"shutdown()": {
-					"details": "Only manager can shutdown, prevents all future interactions"
-				},
-				"startVoting(uint256)": {
-					"details": "Only manager can start voting and set timeout",
-					"params": {
-						"blocksUntilEnd": "Number of blocks until voting ends"
-					}
 				}
 			},
+			"title": "Contract to agree on the lunch venue",
 			"version": 1
 		},
 		"userdoc": {
@@ -412,18 +268,8 @@
 				},
 				"doVote(uint256)": {
 					"notice": "Vote for a restaurant"
-				},
-				"endVoting()": {
-					"notice": "Force end voting (for timeout or manager decision)"
-				},
-				"shutdown()": {
-					"notice": "Shutdown the contract"
-				},
-				"startVoting(uint256)": {
-					"notice": "Start the voting phase"
 				}
 			},
-			"notice": "Solutions To 5 Weaknesses Chosen  1 (Duplicate Votes) - Added a check in doVote() using:     require(!friends[msg.sender].voted, \"You have already voted.\"); - Added bool data to a friend that get updated after a successful vote. - This ensures friends cannot vote more than once.  2 (Duplicate Friends and Restaurants) - Added a check in addFriend() to ensure the address has no associated name:     require(bytes(friends[friendAddress].name).length == 0, \"Friend already exists.\"); - Added a check in addFriend() that ensures non empty names. - This avoids a Remix bug that allows friends to be added without a name. - Added restaurantExists that maps a restaurants hash to a bool if the restaurant exists. - Added a check in addRestaurant that ensures restaurantExists is not true, which is the default if it has never been mapped:     bytes32 nameHash = keccak256(abi.encodePacked(name));     require(!restaurantExists[nameHash], \"Restaurant already exists.\"); - Added mapping in addRestaurant() to ensure their default false is toggled to true. - This ensures that neither users are unique to their address and restaurants are unique to their name.  3 (Contract Phases) - Added an enum Phase to manage contract state. - Added currentPhase to track the phase. - Added onlyDuring(phase) modifier to restrict functions like addFriend, addRestaurant, and doVote. - This ensures friends/restaurants can only be added in the setup phase, and voting only occurs in the voting phase.  4 (Timeout Functionality) - Added endBlock to track when voting ends. - Added startVoting(blocksUntilEnd) which sets endBlock to block.number + blocksUntilEnd. - Edited doVote() to check if block.number > endBlock, calling _endVoting() if true and gracefully exits. - This ensures that the voting phase will timeout after a set amount of blocks that the manager chooses. - As there is no automatic execution in Solidity, this is the closest possible method. - Added endVoting() which calls _endVoting. - This gives managers the ability to automatically end the voting phase.  5 (Shutdown Functionality) - Added a bool isShutdown to disable the contract. - Added a contractActive modifier to guard all public functions. - Added shutdown() which progresses the contract to the final stage without calculating results. - This ensures that managers have the ability to disable the contract.",
 			"version": 1
 		}
 	},
@@ -444,11 +290,11 @@
 	},
 	"sources": {
 		"contracts/LunchVenue.sol": {
-			"keccak256": "0xe5fd283eba4b6b23d9db0963621a7b7b721dc0b1db73284927575a71e50bfac8",
+			"keccak256": "0x2a333063a2fb1d3f8bda9ceb5f05678277176d7733af1e4b935323dd4e50610d",
 			"license": "UNLICENSED",
 			"urls": [
-				"bzz-raw://64ab4ce5c155cbcd1fa90de5a8c02676d10b06b1aa602191c0ee15ecf68f713f",
-				"dweb:/ipfs/QmX8bFjcbZxisDxrCpSt5UvSSRUHaeVMSBqKyHokzUAppD"
+				"bzz-raw://6d57864b401e81dd60ffe2daecf354affa05c0873e6dff3054459b5361d2e202",
+				"dweb:/ipfs/QmNbNtsEocdqpT5c9Pfs2MU6GtCQFchP5U4NLxBKjuC6Mq"
 			]
 		}
 	},

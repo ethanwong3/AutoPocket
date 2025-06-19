@@ -103,7 +103,7 @@
 				"name": "currentPhase",
 				"outputs": [
 					{
-						"internalType": "enum LunchVenue.Phase",
+						"internalType": "enum LunchVenue_updated.Phase",
 						"name": "",
 						"type": "uint8"
 					}
@@ -373,13 +373,13 @@
 			"kind": "dev",
 			"methods": {
 				"_addFriend(address,string)": {
-					"custom:testing": "Only used for testing in LunchVenueTest This function contains the functionality for adding friends this function is wrapped with a function with modifiers to synthetically internally expose this function to testing"
+					"custom:testing": "Exposes the internal logic of addFriend for unit testing. Because try/catch only works on external function calls, this public wrapper allows us to test revert messages.  It is guarded by the same modifiers as addFriend except restricted, so functionality remains unchanged and safe. This function is not meant for production use."
 				},
 				"_addRestaurant(string)": {
-					"custom:testing": "Only used for testing in LunchVenueTest This function contains the functionality for adding restaurants this function is wrapped with a function with modifiers to synthetically internally expose this function to testing"
+					"custom:testing": "Exposes the internal logic of addRestaurant for unit testing. Because try/catch only works on external function calls, this public wrapper allows us to test revert messages. It is guarded by the same modifiers as addRestaurant except restricted, so functionality remains unchanged and safe. This function is not meant for production use."
 				},
 				"addFriend(address,string)": {
-					"details": "Prevents duplication of friends",
+					"details": "wraps _addFriend for clearer testability and separation of access logicprevents duplication of friends",
 					"params": {
 						"friendAddress": "Friend's account/address",
 						"name": "Friend's name"
@@ -389,7 +389,7 @@
 					}
 				},
 				"addRestaurant(string)": {
-					"details": "Prevents duplication of restaurants by checking name hash",
+					"details": "wraps _addRestaurant for clearer testability and separation of access logicprevents duplication of restaurants by checking name hash",
 					"params": {
 						"name": "Restaurant name"
 					},
@@ -417,6 +417,9 @@
 					"params": {
 						"blocksUntilEnd": "Number of blocks until voting ends"
 					}
+				},
+				"voteAs(uint256)": {
+					"details": "Proxy to call doVote from within the contract using a different external context. Primarily used to simulate external calls in testing environments. This function is not meant for production use."
 				}
 			},
 			"version": 1
@@ -425,19 +428,16 @@
 			"kind": "user",
 			"methods": {
 				"addFriend(address,string)": {
-					"notice": "Add a new friend to voter list"
+					"notice": "Public interface for adding a new friend to voter list"
 				},
 				"addRestaurant(string)": {
-					"notice": "Add a new restaurant"
+					"notice": "Public interface for adding a new restaurant"
 				},
 				"doVote(uint256)": {
 					"notice": "Vote for a restaurant"
 				},
 				"endVoting()": {
 					"notice": "Force end voting (for timeout or manager decision)"
-				},
-				"setupShutdownTest()": {
-					"notice": "Setup for shutdown test"
 				},
 				"shutdown()": {
 					"notice": "Shutdown the contract"
@@ -446,10 +446,10 @@
 					"notice": "Start the voting phase"
 				},
 				"testOperationAfterShutdown()": {
-					"notice": "Test operations fail after shutdown (as manager to avoid restricted modifier)"
+					"notice": "NEW TEST 7: Test operations fail after shutdown Must use internally wrapped function to bypass manager restriction as function called by contract"
 				},
 				"testShutdown()": {
-					"notice": "NEW TEST 5: Test shutdown functionality"
+					"notice": "NEW TEST 6: Test shutdown functionality"
 				}
 			},
 			"notice": "Second test contract to test shutdown functionality",
@@ -458,7 +458,7 @@
 	},
 	"settings": {
 		"compilationTarget": {
-			"tests/LunchVenue_test.sol": "LunchVenueShutdownTest"
+			"tests/LunchVenue_updated_test.sol": "LunchVenueShutdownTest"
 		},
 		"evmVersion": "berlin",
 		"libraries": {},
@@ -472,12 +472,12 @@
 		"remappings": []
 	},
 	"sources": {
-		"contracts/LunchVenue.sol": {
-			"keccak256": "0xe5fd283eba4b6b23d9db0963621a7b7b721dc0b1db73284927575a71e50bfac8",
+		"contracts/LunchVenue_updated.sol": {
+			"keccak256": "0x2265bd81a48d49949aca8f57beb929b46bc0530f0f4d70340d30162136a396f7",
 			"license": "UNLICENSED",
 			"urls": [
-				"bzz-raw://64ab4ce5c155cbcd1fa90de5a8c02676d10b06b1aa602191c0ee15ecf68f713f",
-				"dweb:/ipfs/QmX8bFjcbZxisDxrCpSt5UvSSRUHaeVMSBqKyHokzUAppD"
+				"bzz-raw://be098305fd3c27071a1e3ef24d06246a78beb68dce7fbffc0d2879596b96ac1d",
+				"dweb:/ipfs/Qmby7sXV17BQLVfqRkKnfBpvmWZCyh8hg4dY2ncWPgTwrf"
 			]
 		},
 		"remix_accounts.sol": {
@@ -496,12 +496,12 @@
 				"dweb:/ipfs/QmdkW1tT5iadBvaHMCoskhDGZKnfdg8o1D9CcoQYtdJet7"
 			]
 		},
-		"tests/LunchVenue_test.sol": {
-			"keccak256": "0xb6ca664b78ec925a527b2d7aff5c4cdaa04b7992197c58a98e09e86176b1d29f",
+		"tests/LunchVenue_updated_test.sol": {
+			"keccak256": "0x75e9192e3b98857e2d40ea541f1be4f78137969149aa7847d3460ee63be9cc66",
 			"license": "GPL-3.0",
 			"urls": [
-				"bzz-raw://eec09ad3ba66b0edb868302488cd07243f6c39fd05e2261a597c6c30b2aad108",
-				"dweb:/ipfs/QmPQLevaNmpN6gWz52xFamKZLcmgK6wPYbxbcDfoFB5oUg"
+				"bzz-raw://8f28346deb9af30996b08c399692983799379139bb4903b308d1e24e833fcd68",
+				"dweb:/ipfs/QmUeb2j5BX868D5hBJK4m7gxfDRBWiuCh4bPWEgyKJkQhu"
 			]
 		}
 	},

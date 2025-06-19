@@ -1,0 +1,459 @@
+{
+	"compiler": {
+		"version": "0.8.5+commit.a4f2e591"
+	},
+	"language": "Solidity",
+	"output": {
+		"abi": [
+			{
+				"inputs": [],
+				"stateMutability": "nonpayable",
+				"type": "constructor"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "friendAddress",
+						"type": "address"
+					},
+					{
+						"internalType": "string",
+						"name": "name",
+						"type": "string"
+					}
+				],
+				"name": "_addFriend",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "string",
+						"name": "name",
+						"type": "string"
+					}
+				],
+				"name": "_addRestaurant",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "friendAddress",
+						"type": "address"
+					},
+					{
+						"internalType": "string",
+						"name": "name",
+						"type": "string"
+					}
+				],
+				"name": "addFriend",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "string",
+						"name": "name",
+						"type": "string"
+					}
+				],
+				"name": "addRestaurant",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "currentPhase",
+				"outputs": [
+					{
+						"internalType": "enum LunchVenue_updated.Phase",
+						"name": "",
+						"type": "uint8"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "restaurant",
+						"type": "uint256"
+					}
+				],
+				"name": "doVote",
+				"outputs": [
+					{
+						"internalType": "bool",
+						"name": "validVote",
+						"type": "bool"
+					}
+				],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "endBlock",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "endVoting",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "",
+						"type": "address"
+					}
+				],
+				"name": "friends",
+				"outputs": [
+					{
+						"internalType": "string",
+						"name": "name",
+						"type": "string"
+					},
+					{
+						"internalType": "bool",
+						"name": "voted",
+						"type": "bool"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "isShutdown",
+				"outputs": [
+					{
+						"internalType": "bool",
+						"name": "",
+						"type": "bool"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "manager",
+				"outputs": [
+					{
+						"internalType": "address",
+						"name": "",
+						"type": "address"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "numFriends",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "numRestaurants",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "numVotes",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"name": "restaurants",
+				"outputs": [
+					{
+						"internalType": "string",
+						"name": "",
+						"type": "string"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "shutdown",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "blocksUntilEnd",
+						"type": "uint256"
+					}
+				],
+				"name": "startVoting",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "restaurant",
+						"type": "uint256"
+					}
+				],
+				"name": "voteAs",
+				"outputs": [
+					{
+						"internalType": "bool",
+						"name": "",
+						"type": "bool"
+					}
+				],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "voteOpen",
+				"outputs": [
+					{
+						"internalType": "bool",
+						"name": "",
+						"type": "bool"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "votedRestaurant",
+				"outputs": [
+					{
+						"internalType": "string",
+						"name": "",
+						"type": "string"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"name": "votes",
+				"outputs": [
+					{
+						"internalType": "address",
+						"name": "voterAddress",
+						"type": "address"
+					},
+					{
+						"internalType": "uint256",
+						"name": "restaurant",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			}
+		],
+		"devdoc": {
+			"kind": "dev",
+			"methods": {
+				"_addFriend(address,string)": {
+					"custom:testing": "Exposes the internal logic of addFriend for unit testing. Because try/catch only works on external function calls, this public wrapper allows us to test revert messages.  It is guarded by the same modifiers as addFriend except restricted, so functionality remains unchanged and safe. This function is not meant for production use."
+				},
+				"_addRestaurant(string)": {
+					"custom:testing": "Exposes the internal logic of addRestaurant for unit testing. Because try/catch only works on external function calls, this public wrapper allows us to test revert messages. It is guarded by the same modifiers as addRestaurant except restricted, so functionality remains unchanged and safe. This function is not meant for production use."
+				},
+				"addFriend(address,string)": {
+					"details": "wraps _addFriend for clearer testability and separation of access logicprevents duplication of friends",
+					"params": {
+						"friendAddress": "Friend's account/address",
+						"name": "Friend's name"
+					},
+					"returns": {
+						"_0": "Number of friends added so far"
+					}
+				},
+				"addRestaurant(string)": {
+					"details": "wraps _addRestaurant for clearer testability and separation of access logicprevents duplication of restaurants by checking name hash",
+					"params": {
+						"name": "Restaurant name"
+					},
+					"returns": {
+						"_0": "Number of restaurants added so far"
+					}
+				},
+				"constructor": {
+					"details": "Set manager when contract starts"
+				},
+				"doVote(uint256)": {
+					"details": "Prevents duplicate votes and enforces timeout",
+					"params": {
+						"restaurant": "Restaurant number being voted"
+					},
+					"returns": {
+						"validVote": "Is the vote valid? A valid vote should be from a registered  friend to a registered restaurant"
+					}
+				},
+				"endVoting()": {
+					"details": "Can be called by manager or automatically when timeout reached"
+				},
+				"shutdown()": {
+					"details": "Only manager can shutdown, prevents all future interactions"
+				},
+				"startVoting(uint256)": {
+					"details": "Only manager can start voting and set timeout",
+					"params": {
+						"blocksUntilEnd": "Number of blocks until voting ends"
+					}
+				},
+				"voteAs(uint256)": {
+					"details": "Proxy to call doVote from within the contract using a different external context. Primarily used to simulate external calls in testing environments. This function is not meant for production use."
+				}
+			},
+			"version": 1
+		},
+		"userdoc": {
+			"kind": "user",
+			"methods": {
+				"addFriend(address,string)": {
+					"notice": "Public interface for adding a new friend to voter list"
+				},
+				"addRestaurant(string)": {
+					"notice": "Public interface for adding a new restaurant"
+				},
+				"doVote(uint256)": {
+					"notice": "Vote for a restaurant"
+				},
+				"endVoting()": {
+					"notice": "Force end voting (for timeout or manager decision)"
+				},
+				"shutdown()": {
+					"notice": "Shutdown the contract"
+				},
+				"startVoting(uint256)": {
+					"notice": "Start the voting phase"
+				}
+			},
+			"notice": "Testing Strategy - To enable catching revert reasons during testing, certain logic functions (e.g., addFriend/addRestaurant)    are wrapped in externally callable functions (_addFriend/_addRestaurant) with identical protections.   This allows precise unit testing without exposing functionality in production deployments.",
+			"version": 1
+		}
+	},
+	"settings": {
+		"compilationTarget": {
+			"contracts/LunchVenue_updated.sol": "LunchVenue_updated"
+		},
+		"evmVersion": "berlin",
+		"libraries": {},
+		"metadata": {
+			"bytecodeHash": "ipfs"
+		},
+		"optimizer": {
+			"enabled": true,
+			"runs": 200
+		},
+		"remappings": []
+	},
+	"sources": {
+		"contracts/LunchVenue_updated.sol": {
+			"keccak256": "0x2265bd81a48d49949aca8f57beb929b46bc0530f0f4d70340d30162136a396f7",
+			"license": "UNLICENSED",
+			"urls": [
+				"bzz-raw://be098305fd3c27071a1e3ef24d06246a78beb68dce7fbffc0d2879596b96ac1d",
+				"dweb:/ipfs/Qmby7sXV17BQLVfqRkKnfBpvmWZCyh8hg4dY2ncWPgTwrf"
+			]
+		}
+	},
+	"version": 1
+}

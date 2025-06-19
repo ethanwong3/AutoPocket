@@ -39,23 +39,11 @@ contract LunchVenueTest is LunchVenue {
         Assert.equal(manager, acc0, 'Manager should be acc0');
     }
     
-    /// Add restaurant as manager
+    /// Add restuarant as manager
     /// When msg.sender isn't specified, default account (i.e., account-0) is the sender
     function setRestaurant() public {
         Assert.equal(addRestaurant('Courtyard Cafe'), 1, 'Should be equal to 1');
         Assert.equal(addRestaurant('Uni Cafe'), 2, 'Should be equal to 2');
-    }
-    
-    /// NEW TEST 1: Test duplicate restaurant prevention (as manager)
-    /// sender: account-0
-    function testDuplicateRestaurant() public {
-        try this._addRestaurant('Courtyard Cafe') returns (uint v){
-            Assert.ok(false, 'Should not allow duplicate restaurant');
-        } catch Error(string memory reason) {
-            Assert.equal(reason, 'Restaurant already exists.', 'Should fail with duplicate restaurant message');
-        } catch {
-            Assert.ok(false, 'Failed unexpectedly');
-        }
     }
     
     /// Try to add a restaurant as a user other than manager. This should fail
@@ -84,17 +72,6 @@ contract LunchVenueTest is LunchVenue {
        Assert.equal(addFriend(acc3, 'Eve'), 4, 'Should be equal to 4');
     }
     
-    /// NEW TEST 2: Test duplicate friend prevention (as manager)
-    function testDuplicateFriend() public {
-        try this._addFriend(acc0, 'Another Alice') returns (uint f) {
-            Assert.ok(false, 'Should not allow duplicate friend');
-        } catch Error(string memory reason) {
-            Assert.equal(reason, 'Friend already exists.', 'Should fail with duplicate friend message');
-        } catch {
-            Assert.ok(false, 'Failed unexpectedly');
-        }
-    }
-    
     /// Try adding friend as a user other than manager. This should fail
     function setFriendFailure() public {
         try this.addFriend(acc4, 'Daniels') returns (uint f) {
@@ -109,24 +86,6 @@ contract LunchVenueTest is LunchVenue {
         }
     }
     
-    /// Start voting phase
-    function startVotingPhase() public {
-        startVoting(100); // Set voting to end in 100 blocks
-        Assert.equal(uint(currentPhase), uint(Phase.Voting), 'Should be in voting phase');
-        Assert.equal(voteOpen, true, 'Voting should be open');
-    }
-    
-    /// NEW TEST 3: Test contract phases - try to add restaurant during voting (as manager)
-    function testPhaseRestriction() public {
-        try this._addRestaurant('New Restaurant') returns (uint v) {
-            Assert.ok(false, 'Should not allow adding restaurant during voting phase');
-        } catch Error(string memory reason) {
-            Assert.equal(reason, 'Action not allowed in current phase.', 'Should fail with phase restriction message');
-        } catch {
-            Assert.ok(false, 'Failed unexpectedly');
-        }
-    }
-    
     /// Vote as Bob (acc1)
     /// #sender: account-1
     function vote() public {
@@ -138,39 +97,11 @@ contract LunchVenueTest is LunchVenue {
     function vote2() public {
         Assert.ok(doVote(1), "Voting result should be true");
     }
-
-    /// NEW TEST 4: Test duplicate voting prevention
-    /// #sender: account-1
-    function testDuplicateVoting() public {
-        // Sanity check: Bob is already a friend and has voted in a previous test
-        Friend memory bob = friends[msg.sender];
-        Assert.equal(bob.voted, true, 'Bob should have already voted');
-
-        uint beforeVotes = numVotes;
-
-        // Attempt duplicate vote — should fail silently via revert
-        // Because a revert rolls back state, numVotes should remain unchanged
-        bool success = false;
-        try this.voteAs(2) returns (bool v) {
-            success = v;
-        } catch {
-            // expected
-        }
-
-        Assert.equal(success, false, "Duplicate vote should not be allowed");
-        Assert.equal(numVotes, beforeVotes, "Vote count should not increase");
-    }
     
 	/// Try voting as a user not in the friends list. This should fail
     /// #sender: account-4
     function voteFailure() public {
-        try this.doVote(1) returns (bool validVote) {
-            Assert.equal(validVote, false, "Voting result should be false");
-        } catch Error(string memory reason) {
-            Assert.equal(reason, 'You are not a registered friend.', 'Should fail with not registered message');
-        } catch {
-            Assert.ok(false, 'Failed unexpectedly');
-        }
+        Assert.equal(doVote(1), false, "Voting result should be false");
     }
 
     /// Vote as Eve
@@ -194,47 +125,11 @@ contract LunchVenueTest is LunchVenue {
         try this.doVote(1) returns (bool validVote) {
             Assert.equal(validVote, true, 'Method execution did not fail');
         } catch Error(string memory reason) {
-            // After voting ends, phase changes to Ended, so we get phase error
-            Assert.equal(reason, 'Action not allowed in current phase.', 'Failed with unexpected reason');
+            // Compare failure reason, check if it is as expected
+            Assert.equal(reason, 'Can vote only while voting is open.', 'Failed with unexpected reason');
         } catch Panic( uint /* errorCode */) { // In case of a panic
             Assert.ok(false , 'Failed unexpected with error code');        
         } catch (bytes memory /*lowLevelData*/) {
-            Assert.ok(false, 'Failed unexpectedly');
-        }
-    }
-}
-
-/// Second test contract to test shutdown functionality
-contract LunchVenueShutdownTest is LunchVenue {
-    
-    address acc0;   
-    address acc1;
-
-    function beforeAll() public {
-        acc0 = TestsAccounts.getAccount(0);
-        acc1 = TestsAccounts.getAccount(1);
-    }
-
-    /// Setup for shutdown test
-    function setupShutdownTest() public {
-        addRestaurant('Test Restaurant');
-        addFriend(acc0, 'Test Friend');
-    }
-    
-    /// NEW TEST 5: Test shutdown functionality
-    function testShutdown() public {
-        shutdown();
-        Assert.equal(isShutdown, true, 'Contract should be shutdown');
-        Assert.equal(uint(currentPhase), uint(Phase.Ended), 'Phase should be Ended');
-    }
-    
-    /// Test operations fail after shutdown (as manager to avoid restricted modifier)
-    function testOperationAfterShutdown() public {
-        try this.addRestaurant('Should Fail') returns (uint v) {
-            Assert.ok(false, 'Should not work after shutdown');
-        } catch Error(string memory reason) {
-            Assert.equal(reason, 'Contract is shut down.', 'Should fail with shutdown message');
-        } catch {
             Assert.ok(false, 'Failed unexpectedly');
         }
     }

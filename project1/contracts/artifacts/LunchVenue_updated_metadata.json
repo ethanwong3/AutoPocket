@@ -1,6 +1,6 @@
 {
 	"compiler": {
-		"version": "0.8.5+commit.a4f2e591"
+		"version": "0.8.18+commit.87f61d96"
 	},
 	"language": "Solidity",
 	"output": {
@@ -347,6 +347,7 @@
 			}
 		],
 		"devdoc": {
+			"author": "Dilum Bandara, CSIRO's Data61 (Upgraded Version)",
 			"kind": "dev",
 			"methods": {
 				"_addFriend(address,string)": {
@@ -402,6 +403,7 @@
 					"details": "Proxy to call doVote from within the contract using a different external context. Primarily used to simulate external calls in testing environments. This function is not meant for production use."
 				}
 			},
+			"title": "Contract to agree on the lunch venue",
 			"version": 1
 		},
 		"userdoc": {
@@ -426,7 +428,6 @@
 					"notice": "Start the voting phase"
 				}
 			},
-			"notice": "Testing Strategy - To enable catching revert reasons during testing, certain logic functions (e.g., addFriend/addRestaurant)    are wrapped in externally callable functions (_addFriend/_addRestaurant) with identical protections.   This allows precise unit testing without exposing functionality in production deployments.",
 			"version": 1
 		}
 	},
@@ -434,24 +435,24 @@
 		"compilationTarget": {
 			"project1/contracts/LunchVenue_updated.sol": "LunchVenue_updated"
 		},
-		"evmVersion": "berlin",
+		"evmVersion": "paris",
 		"libraries": {},
 		"metadata": {
 			"bytecodeHash": "ipfs"
 		},
 		"optimizer": {
-			"enabled": true,
+			"enabled": false,
 			"runs": 200
 		},
 		"remappings": []
 	},
 	"sources": {
 		"project1/contracts/LunchVenue_updated.sol": {
-			"keccak256": "0x2265bd81a48d49949aca8f57beb929b46bc0530f0f4d70340d30162136a396f7",
+			"keccak256": "0xdf408eb2eb45553bc2b2324442cfe217031df8cfde01d10e9f8e6c084db64ada",
 			"license": "UNLICENSED",
 			"urls": [
-				"bzz-raw://be098305fd3c27071a1e3ef24d06246a78beb68dce7fbffc0d2879596b96ac1d",
-				"dweb:/ipfs/Qmby7sXV17BQLVfqRkKnfBpvmWZCyh8hg4dY2ncWPgTwrf"
+				"bzz-raw://e37c8f9736979036a4d0e8a4a979abae07587059e45b94054fa113eba9ff3a55",
+				"dweb:/ipfs/QmYGJtrCEZxwTNHiqnvr1k7bMpkbzGe1KJCi31duTpSYXV"
 			]
 		}
 	},

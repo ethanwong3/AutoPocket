@@ -1,0 +1,51 @@
+Solutions To 5 Weaknesses Chosen
+
+1 (Duplicate Votes)
+
+- Added a check in doVote() using:
+    require(!friends[msg.sender].voted, "You have already voted.");
+- Added bool data to a friend that get updated after a successful vote.
+- This ensures friends cannot vote more than once.
+
+2 (Duplicate Friends and Restaurants)
+
+- Added a check in addFriend() to ensure the address has no associated name:
+    require(bytes(friends[friendAddress].name).length == 0, "Friend already exists.");
+- Added a check in addFriend() that ensures non empty names.
+- This avoids a Remix bug that allows friends to be added without a name.
+- Added restaurantExists that maps a restaurants hash to a bool if the restaurant exists.
+- Added a check in addRestaurant that ensures restaurantExists is not true, which is the default if it has never been mapped:
+    bytes32 nameHash = keccak256(abi.encodePacked(name));
+    require(!restaurantExists[nameHash], "Restaurant already exists.");
+- Added mapping in addRestaurant() to ensure their default false is toggled to true.
+- This ensures that neither users are unique to their address and restaurants are unique to their name.
+
+3 (Contract Phases)
+
+- Added an enum Phase to manage contract state.
+- Added currentPhase to track the phase.
+- Added onlyDuring(phase) modifier to restrict functions like addFriend, addRestaurant, and doVote.
+- This ensures friends/restaurants can only be added in the setup phase, and voting only occurs in the voting phase.
+
+4 (Timeout Functionality)
+
+- Added endBlock to track when voting ends.
+- Added startVoting(blocksUntilEnd) which sets endBlock to block.number + blocksUntilEnd.
+- Edited doVote() to check if block.number > endBlock, calling _endVoting() if true and gracefully exits.
+- This ensures that the voting phase will timeout after a set amount of blocks that the manager chooses.
+- As there is no automatic execution in Solidity, this is the closest possible method.
+- Added endVoting() which calls _endVoting.
+- This gives managers the ability to automatically end the voting phase.
+
+5 (Shutdown Functionality)
+
+- Added a bool isShutdown to disable the contract.
+- Added a contractActive modifier to guard all public functions.
+- Added shutdown() which progresses the contract to the final stage without calculating results.
+- This ensures that managers have the ability to disable the contract.
+
+Testing Strategy Note
+
+To enable catching revert reasons during testing, certain logic functions (e.g., addFriend/addRestaurant) 
+are wrapped in externally callable functions (_addFriend/_addRestaurant) with identical protections.
+This allows precise unit testing without exposing functionality in production deployments.

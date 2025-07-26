@@ -19,6 +19,10 @@ contract LoanAgreement {
     // isRepaid, isDefaulted (track loan status)
     // tokenAddress (erc-20 interactions)
 
+    // things need to add with status filter
+    // .getStatus()
+    // .LoanStatus
+
     // Functions
 
     // constructor() sets vars at creation

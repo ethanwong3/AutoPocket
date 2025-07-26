@@ -57,15 +57,19 @@ contract LoanFactory {
         emit LoanCreated(_borrower, msg.sender, loanAddress);
     }
 
-    function getLoanCount() external view returns (uint256) {
+    function getLoans() external view returns (address[] memory) {
+        return loans;
+    }
+
+    function getLoansCount() external view returns (uint256) {
         return loans.length;
     }
 
-    function getBorrowerLoanCount(address user) external view returns (uint256) {
+    function getBorrowerLoansCount(address user) external view returns (uint256) {
         return loansByBorrower[user].length;
     }
 
-    function getLenderLoanCount(address user) external view returns (uint256) {
+    function getLenderLoansCount(address user) external view returns (uint256) {
         return loansByLender[user].length;
     }
 
@@ -76,6 +80,48 @@ contract LoanFactory {
     function getLenderLoans(address user) external view returns (address[] memory) {
         return loansByLender[user];
     }
+
+    /// @notice         helper function to filter loans by status
+    /// @param loansArr array of loan addresses (borrower or lender)
+    /// @param status   loan status to match
+    /// @return         filtered list of loan contract addresses
+    function getUserLoansByStatus(address[] memory loansArr, LoanAgreement.LoanStatus status) internal view returns (address[] memory) {
+        // first pass: count matching loans to synthetically malloc space
+        uint256 count = 0;
+        for (uint256 i = 0; i < loansArr.length; i++) {
+            if (LoanAgreement(loansArr[i]).getStatus() == status) {
+                count++;
+            }
+        }
+
+        // second pass: collect matching loans to populate synthetically mallocd space
+        address[] memory res = new address[](count);
+        uint256 j = 0;
+        for (uint256 i = 0; i < loansArr.length; i++) {
+            if (LoanAgreement(loansArr[i]).getStatus() == status) {
+                res[j++] = loansArr[i];
+            }
+        }
+
+        return res;
+    }
+
+    /// @notice         filter borrower loans by specific status
+    /// @param borrower address of borrower
+    /// @param status   loan status to filter for
+    /// @return         filtered list of loan contract addresses
+    function getBorrowerLoansByStatus(address borrower, LoanAgreement.LoanStatus status) external view returns (address[] memory) {
+        return getUserLoansByStatus(loansByBorrower[borrower], status);
+    }
+
+    /// @notice         filter lender loans by specific status
+    /// @param lender   address of lender
+    /// @param status   loan status to filter for
+    /// @return         filtered list of loan contract addresses
+    function getLenderLoansByStatus(address lender, LoanAgreement.LoanStatus status) external view returns (address[] memory) {
+        return getUserLoansByStatus(loansByLender[lender], status);
+    }
+
 
     // Trust Score Functions /////////////////////////////////////////////////////////////////////
 

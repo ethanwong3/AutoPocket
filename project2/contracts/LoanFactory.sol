@@ -13,6 +13,8 @@ contract LoanFactory {
     
     address[] public loans;                                                                     // deployed loan tracker
     mapping(address => bool) public isValidLoan;                                                // map loan to validity
+    mapping(address => address[]) public loansByBorrower;                                       // map borrower to their loans
+    mapping(address => address[]) public loansByLender;                                         // map lender to their loans
     mapping(address => int256) public trustScores;                                              // map user to their trust score
     event LoanCreated(address indexed borrower, address indexed lender, address loanAddress);   // event emitted whenever loan created
 
@@ -33,6 +35,7 @@ contract LoanFactory {
         uint256 _interestPercent
     ) external returns (address loanAddress) {
 
+        // create new instance
         LoanAgreement loan = new LoanAgreement(
             msg.sender,
             _borrower,
@@ -43,16 +46,35 @@ contract LoanFactory {
             address(this)
         );
 
+        // validate loan and append to tracking vars
         loanAddress = address(loan);
         loans.push(loanAddress);
+        loansByBorrower[_borrower].push(loanAddress);
+        loansByLender[msg.sender].push(loanAddress);
         isValidLoan[loanAddress] = true;
 
+        // emit event for frontend to listen for
         emit LoanCreated(_borrower, msg.sender, loanAddress);
     }
 
-    /// @notice return total number of loans
     function getLoanCount() external view returns (uint256) {
         return loans.length;
+    }
+
+    function getBorrowerLoanCount(address user) external view returns (uint256) {
+        return loansByBorrower[user].length;
+    }
+
+    function getLenderLoanCount(address user) external view returns (uint256) {
+        return loansByLender[user].length;
+    }
+
+    function getBorrowerLoans(address user) external view returns (address[] memory) {
+        return loansByBorrower[user];
+    }
+
+    function getLenderLoans(address user) external view returns (address[] memory) {
+        return loansByLender[user];
     }
 
     // Trust Score Functions /////////////////////////////////////////////////////////////////////
@@ -70,8 +92,5 @@ contract LoanFactory {
     function getTrustScore(address _user) external view returns (int256) {
         return trustScores[_user];
     }
-
-    // getLoansByBorrower() gets user loan history
-    // totalLoans() gets user loan total
 
 }

@@ -7,6 +7,10 @@ pragma solidity ^0.8.0;
 
 contract LoanAgreement {
 
+
+    constructor (address l, address b, uint256 a, address t, uint256 d, uint256 i, address f) {
+    }
+
     // Variables
 
     // lender and borrower (parties involved in loan)
